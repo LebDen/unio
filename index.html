@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UNIO — тестирование спроса на мужскую одежду.">
+    <title>UNIO | FIRE DROP</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=space-grotesk@300,400,500,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --card-bg: #0a0a0a;
+            --border: #222;
+            --text: #fff;
+            --muted: #555;
+            --fire: #ff3d00;
+            --fire-glow: rgba(255, 61, 0, 0.5);
+            --font-head: 'Clash Display', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+            /* Noise texture */
+            body::before {
+                content: '';
+                position: fixed;
+                inset: -50%;
+                width: 200%;
+                height: 200%;
+                background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+                opacity: 0.06;
+                pointer-events: none;
+                z-index: 0;
+                animation: grain 0.5s steps(1) infinite;
+            }
+
+        @keyframes grain {
+            0%,100% {
+                transform: translate(0,0)
+            }
+
+            10% {
+                transform: translate(-5%,-10%)
+            }
+
+            30% {
+                transform: translate(3%,-15%)
+            }
+
+            50% {
+                transform: translate(12%,9%)
+            }
+
+            70% {
+                transform: translate(9%,4%)
+            }
+
+            90% {
+                transform: translate(-1%,7%)
+            }
+        }
+
+        /* ===== INTRO ===== */
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--bg);
+            display: grid;
+            place-items: center;
+            transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+            #intro.up {
+                transform: translateY(-100%);
+            }
+
+        .intro-logo {
+            font-family: var(--font-head);
+            font-size: clamp(4rem, 18vw, 14rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            opacity: 0;
+            animation: popIn 1s ease 0.4s forwards;
+        }
+
+        .intro-sub {
+            position: absolute;
+            bottom: 12vh;
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--muted);
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1.2s forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) translateY(40px)
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.05) translateY(-5px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0)
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ===== SCREEN FLASH ===== */
+        #flash {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            background: radial-gradient(circle at var(--fx) var(--fy), rgba(255,61,0,0.25), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+            #flash.active {
+                opacity: 1;
+            }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 90;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid transparent;
+            background: rgba(3,3,3,0.7);
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+            header.scrolled {
+                border-bottom-color: var(--border);
+                background: rgba(3,3,3,0.95);
+            }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+            .logo span {
+                font-size: 0.65em;
+                color: var(--muted);
+                border: 1px solid var(--muted);
+                padding: 2px 8px;
+                margin-left: 6px;
+            }
+
+        .btn-share {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            transition: all 0.3s;
+        }
+
+            .btn-share:hover {
+                color: var(--text);
+                border-color: var(--text);
+                background: var(--text);
+                color: var(--bg);
+            }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+            .hero::after {
+                content: '';
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80vw;
+                height: 80vw;
+                max-width: 600px;
+                max-height: 600px;
+                background: radial-gradient(circle, rgba(255,61,0,0.06) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: -1;
+                animation: pulseGlow 4s ease-in-out infinite;
+            }
+
+        @keyframes pulseGlow {
+            0%,100% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.1)
+            }
+        }
+
+        h1 {
+            font-family: var(--font-head);
+            font-size: clamp(3.5rem, 11vw, 10rem);
+            line-height: 0.88;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+            h1 em {
+                font-style: italic;
+                font-weight: 300;
+                color: var(--muted);
+            }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 520px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%,100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(8px)
+            }
+        }
+
+        /* ===== MARQUEE ===== */
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            background: var(--bg);
+            position: relative;
+            z-index: 2;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+            width: max-content;
+        }
+
+            .marquee-track span {
+                font-size: 0.75rem;
+                letter-spacing: 0.3em;
+                text-transform: uppercase;
+                color: var(--muted);
+                white-space: nowrap;
+                padding: 0 40px;
+            }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ===== CATALOG ===== */
+        .catalog {
+            padding: 80px 20px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .catalog-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sec-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-transform: uppercase;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+            .chip:hover {
+                color: var(--text);
+                border-color: var(--text);
+            }
+
+            .chip.active {
+                background: var(--text);
+                color: var(--bg);
+                border-color: var(--text);
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px 24px;
+        }
+
+        /* CARD */
+        .card {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .card-img-wrap {
+            aspect-ratio: 3/4;
+            background: #0d0d0d;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+            transition: border-color 0.4s;
+        }
+
+        .card:hover .card-img-wrap {
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) brightness(0.85);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .card:hover .card-img-wrap img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.06);
+        }
+
+        /* FIRE BUTTON */
+        .btn-fire {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+            .btn-fire.voted {
+                color: #fff;
+                background: var(--fire);
+                border-color: #fff;
+                box-shadow: 0 0 30px var(--fire-glow), 0 0 60px rgba(255,61,0,0.2);
+                transform: scale(1.15);
+            }
+
+        .card-info {
+            padding: 18px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .card-price {
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        /* Vote count badge */
+        .vote-count {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: all 0.3s;
+            z-index: 5;
+        }
+
+        .card:hover .vote-count {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== PARTICLES ===== */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            font-size: 1.6rem;
+            opacity: 0;
+            animation: particleFly 0.9s cubic-bezier(0,0,0.2,1) forwards;
+        }
+
+        @keyframes particleFly {
+            0% {
+                opacity: 1;
+                transform: translate(-50%,-50%) scale(0.3) rotate(0deg);
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2) rotate(var(--rot));
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px) {
+            header {
+                padding: 16px 20px;
+            }
+
+            .catalog {
+                padding: 50px 16px 80px;
+            }
+
+            .sec-title {
+                font-size: 1.8rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .card-img-wrap {
+                aspect-ratio: 3/4;
+            }
+
+            .btn-fire {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .card-info {
+                padding: 10px 0 0;
+            }
+
+            .card-title {
+                font-size: 0.95rem;
+            }
+
+            .card-price {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .card-info {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash overlay -->
+    <div id="flash"></div>
+
+    <!-- Intro -->
+    <div id="intro">
+        <h1 class="intro-logo">UNIO</h1>
+        <p class="intro-sub">Будь собой · Будь в UNIO</p>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="logo">UNIO <span>BETA</span></div>
+        <button class="btn-share" onclick="sharePage()">Поделиться ↗</button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>UNIO<br><em>Будь собой.</em></h1>
+            <p class="hero-desc">Двойной тап по карточке, чтобы поставить огонь 🔥<br>Собираем самые горячие модели.</p>
+            <div class="scroll-hint">↓ Прокрутите вниз</div>
+        </section>
+
+        <div class="marquee">
+            <div class="marquee-track">
+                <!-- Первый логический блок -->
+                <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
+                <!-- Дубликат для бесшовного цикла -->
+                <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
+            </div>
+        </div>
+
+        <section class="catalog" id="catalog">
+            <div class="catalog-head">
+                <h2 class="sec-title">Модели</h2>
+                <div class="filters">
+                    <button class="chip active" data-filter="all">Все</button>
+                    <button class="chip" data-filter="верх">Верх</button>
+                    <button class="chip" data-filter="низ">Низ</button>
+                    <button class="chip" data-filter="аксессуары">Аксессуары</button>
+                </div>
+            </div>
+            <div class="grid" id="grid"></div>
+        </section>
+    </main>
+
+    <footer style="padding: 50px 20px; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
+        <p>© 2026 UNIO. Пилотный проект. Цены — по себестоимости.</p>
+    </footer>
+
+    <script>
+        const PRODUCTS = [
+            { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
+            { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
+            { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
+            { id: 4, title: 'Куртка бомбер', category: 'верх', price: '5 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 5, title: 'Ремень кожаный', category: 'аксессуары', price: '1 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 7, title: 'Худи тёплое', category: 'верх', price: '3 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
+        ];
+
+        let votes = {};
+        try { const s = localStorage.getItem('unio_votes'); if (s) votes = JSON.parse(s); } catch (e) { }
+
+        const intro = document.getElementById('intro');
+        const header = document.getElementById('header');
+        const grid = document.getElementById('grid');
+        const flash = document.getElementById('flash');
+        const filters = document.querySelectorAll('.filters .chip');
+
+        // ===== INTRO =====
+        setTimeout(() => {
+            intro.classList.add('up');
+            setTimeout(() => document.getElementById('catalog').scrollIntoView({ behavior: 'smooth', block: 'start' }), 1000);
+        }, 2800);
+
+        // ===== HEADER SCROLL =====
+        window.addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 50), { passive: true });
+
+        // ===== 3D TILT ON CARDS =====
+        let currentTiltCard = null;
+        grid.addEventListener('mousemove', e => {
+            const card = e.target.closest('.card');
+            if (!card) return;
+            const inner = card.querySelector('.card-inner');
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            inner.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+            currentTiltCard = card;
+        });
+        grid.addEventListener('mouseleave', () => {
+            if (currentTiltCard) {
+                currentTiltCard.querySelector('.card-inner').style.transform = '';
+                currentTiltCard = null;
+            }
+        });
+
+        // ===== RENDER =====
+        function renderGrid(list) {
+            grid.innerHTML = '';
+            list.forEach((p, i) => {
+                const v = votes[p.id] || 0;
+                const card = document.createElement('article');
+                card.className = 'card';
+                card.dataset.id = p.id;
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.innerHTML = `
+                        <div class="card-inner">
+                            <div class="card-img-wrap">
+                                <img src="${p.img}" alt="${p.title}" loading="lazy">
+                                <div class="vote-count">${v > 0 ? v + ' 🔥' : ''}</div>
+                                <div class="btn-fire ${v ? 'voted' : ''}">🔥</div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">${p.title}</h3>
+                                <span class="card-price">${p.price}</span>
+                            </div>
+                        </div>
+                    `;
+                grid.appendChild(card);
+
+                // Staggered reveal
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + i * 80);
+            });
+        }
+
+        // ===== DOUBLE TAP / CLICK =====
+        let lastTap = 0;
+        grid.addEventListener('click', e => {
+            const card = e.target.closest('.card');
+            if (!card) return;
+
+            const now = Date.now();
+            if (now - lastTap < 350) {
+                // DOUBLE TAP!
+                handleDoubleTap(card, e);
+                lastTap = 0;
+            } else {
+                lastTap = now;
+            }
+        });
+
+        function handleDoubleTap(card, e) {
+            const id = Number(card.dataset.id);
+            const btn = card.querySelector('.btn-fire');
+            const countEl = card.querySelector('.vote-count');
+
+            votes[id] = votes[id] ? 0 : (votes[id] || 0) + 1;
+            try { localStorage.setItem('unio_votes', JSON.stringify(votes)); } catch { }
+
+            if (votes[id]) {
+                // Activate
+                btn.classList.add('voted');
+                countEl.textContent = votes[id] + ' 🔥';
+
+                // Flash effect
+                flash.style.setProperty('--fx', e.clientX + 'px');
+                flash.style.setProperty('--fy', e.clientY + 'px');
+                flash.classList.add('active');
+                setTimeout(() => flash.classList.remove('active'), 200);
+
+                // Spawn particles
+                spawnParticles(e.clientX, e.clientY);
+
+                // Haptic feedback (mobile)
+                if (navigator.vibrate) navigator.vibrate(30);
+            } else {
+                btn.classList.remove('voted');
+                countEl.textContent = '';
+            }
+        }
+
+        // ===== PARTICLE SYSTEM =====
+        function spawnParticles(x, y) {
+            const emojis = ['🔥', '', '', '✨', '', '🔥'];
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const angle = (Math.PI * 2 / 12) * i + (Math.random() - 0.5) * 0.5;
+                const dist = 60 + Math.random() * 100;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 40;
+                const rot = (Math.random() - 0.5) * 720;
+
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                p.style.setProperty('--tx', tx + 'px');
+                p.style.setProperty('--ty', ty + 'px');
+                p.style.setProperty('--rot', rot + 'deg');
+                p.style.animationDelay = (Math.random() * 0.1) + 's';
+                p.style.fontSize = (1.2 + Math.random() * 0.8) + 'rem';
+
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+
+        // ===== FILTERS =====
+        filters.forEach(f => f.addEventListener('click', () => {
+            filters.forEach(c => c.classList.remove('active'));
+            f.classList.add('active');
+            const filter = f.dataset.filter;
+            let list = [...PRODUCTS];
+            if (filter !== 'all') list = list.filter(p => p.category === filter);
+            renderGrid(list);
+        }));
+
+        // ===== SHARE =====
+        window.sharePage = () => {
+            const txt = `UNIO — тест мужской одежды. Голосуйте за модели! Решение — 01.08.2026. ${location.href}`;
+            if (navigator.share) navigator.share({ title: 'UNIO', text: txt, url: location.href }).catch(() => { });
+            else navigator.clipboard.writeText(txt).then(() => alert('Ссылка скопирована'));
+        };
+
+        // ===== INIT =====
+        renderGrid(PRODUCTS);
+    </script>
+</body>
+</html>
