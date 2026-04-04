@@ -626,196 +626,138 @@
         <p>© 2026 UNIO. Пилотный проект. Цены — по себестоимости.</p>
     </footer>
 
-            <script>
-        /* ===== СЧЕТЧИК (CountAPI) ===== */
-        const API_NS = 'unio-fire-drop-beta'; 
-        const API_BASE = 'https://api.countapi.xyz';
-        
-        /* ===== ПРОДУКТЫ ===== */
-        const PRODUCTS = [
-            { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
-            { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
-            { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
-            { id: 4, title: 'Носки', category: 'аксессуары', price: '490 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png' },
-            { id: 5, title: 'Ремень кожаный', category: 'аксессуары', price: '1 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-            { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-            { id: 7, title: 'Худи тёплое', category: 'верх', price: '3 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-            { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
-        ];
+           <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'hmdqwadggfjpovqpaajf';
+    const SUPABASE_KEY = 'sb_publishable_XAF9KzDU7sHgHcqqU47W2w_4n3clPLf';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let votes = {};
-        const intro = document.getElementById('intro');
-        const header = document.getElementById('header');
-        const grid = document.getElementById('grid');
-        const flash = document.getElementById('flash');
-        const filters = document.querySelectorAll('.filters .chip');
+    const PRODUCTS = [
+        { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
+        { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
+        { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
+        { id: 4, title: 'Носки', category: 'аксессуары', price: '490 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png' },
+        { id: 5, title: 'Ремень кожаный', category: 'аксессуары', price: '1 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+        { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+        { id: 7, title: 'Худи тёплое', category: 'верх', price: '3 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+        { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
+    ];
 
-        /* ===== ИНИЦИАЛИЗАЦИЯ ===== */
-        async function init() {
-            console.log('🔄 Загрузка голосов с сервера...');
-            await loadVotes();
-            renderGrid(PRODUCTS);
-            
-            setTimeout(() => {
-                intro.classList.add('up');
-                setTimeout(() => document.getElementById('catalog').scrollIntoView({ behavior: 'smooth', block: 'start' }), 1000);
-            }, 2800);
+    let votes = {};
+    const intro = document.getElementById('intro');
+    const header = document.getElementById('header');
+    const grid = document.getElementById('grid');
+    const flash = document.getElementById('flash');
+    const filters = document.querySelectorAll('.filters .chip');
+
+    async function init() {
+        // Загружаем голоса из Supabase
+        const { data } = await supabase.from('votes').select('id');
+        if (data) {
+            data.forEach(v => votes[v.id] = (votes[v.id] || 0) + 1);
         }
+        renderGrid(PRODUCTS);
+        setTimeout(() => { intro.classList.add('up'); setTimeout(() => document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' }), 800); }, 2500);
+    }
 
-        /* ===== API ЛОГИКА ===== */
-        async function loadVotes() {
-            try {
-                const promises = PRODUCTS.map(p => 
-                    fetch(`${API_BASE}/get/${API_NS}/product-${p.id}`)
-                        .then(r => r.json())
-                        .then(data => { votes[p.id] = data.value || 0; })
-                );
-                await Promise.all(promises);
-                console.log('✅ Голоса загружены:', votes);
-            } catch (err) {
-                console.warn('⚠️ API недоступен (возможно, открыто локально). Использую локальные данные.');
-                // Fallback: читаем из localStorage, чтобы сайт не ломался
-                try {
-                    const local = JSON.parse(localStorage.getItem('unio_local_votes') || '{}');
-                    PRODUCTS.forEach(p => votes[p.id] = local[p.id] || 0);
-                } catch {}
-            }
-        }
+    async function submitVote(id) {
+        const { error } = await supabase.from('votes').insert({ id });
+        return !error;
+    }
 
-        async function submitVote(id) {
-            try {
-                await fetch(`${API_BASE}/hit/${API_NS}/product-${id}`);
-                console.log(`🔥 Голос за #${id} отправлен`);
-                return true;
-            } catch (err) {
-                console.warn('⚠️ Не удалось отправить голос на сервер. Сохраняю локально.');
-                // Fallback
-                let local = JSON.parse(localStorage.getItem('unio_local_votes') || '{}');
-                local[id] = (local[id] || 0) + 1;
-                localStorage.setItem('unio_local_votes', JSON.stringify(local));
-                return false;
-            }
-        }
-
-        /* ===== ОТРИСОВКА ===== */
-        function renderGrid(list) {
-            grid.innerHTML = '';
-            list.forEach((p, i) => {
-                const v = votes[p.id] || 0;
-                const hasVoted = localStorage.getItem(`voted_${p.id}`);
-                
-                const card = document.createElement('article');
-                card.className = 'card';
-                card.dataset.id = p.id;
-                card.style.opacity = '0'; card.style.transform = 'translateY(30px)';
-                
-                card.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-img-wrap">
-                            <img src="${p.img}" alt="${p.title}" loading="lazy">
-                            <div class="vote-count">${v > 0 ? v + ' 🔥' : ''}</div>
-                            <div class="btn-fire ${hasVoted ? 'voted' : ''}" ${hasVoted ? 'title="Вы уже голосовали"' : ''}>🔥</div>
-                        </div>
-                        <div class="card-info">
-                            <h3 class="card-title">${p.title}</h3>
-                            <span class="card-price">${p.price}</span>
-                        </div>
+    function renderGrid(list) {
+        grid.innerHTML = '';
+        list.forEach((p, i) => {
+            const v = votes[p.id] || 0;
+            const voted = localStorage.getItem(`voted_${p.id}`);
+            const card = document.createElement('article');
+            card.className = 'card'; card.dataset.id = p.id;
+            card.style.opacity = '0'; card.style.transform = 'translateY(30px)';
+            card.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-img-wrap">
+                        <img src="${p.img}" alt="${p.title}" loading="lazy">
+                        <div class="vote-count">${v > 0 ? v + ' 🔥' : ''}</div>
+                        <div class="btn-fire ${voted ? 'voted' : ''}" ${voted ? 'title="Вы уже голосовали"' : ''}>🔥</div>
                     </div>
-                `;
-                grid.appendChild(card);
-                setTimeout(() => {
-                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    card.style.opacity = '1'; card.style.transform = 'translateY(0)';
-                }, 100 + i * 80);
-            });
-        }
-
-        /* ===== ГОЛОСОВАНИЕ ===== */
-        let lastTap = 0;
-        grid.addEventListener('click', e => {
-            const card = e.target.closest('.card'); if (!card) return;
-            const now = Date.now();
-            if (now - lastTap < 350) { handleVote(card, e); lastTap = 0; } 
-            else { lastTap = now; }
+                    <div class="card-info">
+                        <h3 class="card-title">${p.title}</h3>
+                        <span class="card-price">${p.price}</span>
+                    </div>
+                </div>`;
+            grid.appendChild(card);
+            setTimeout(() => { card.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 100 + i * 80);
         });
+    }
 
-        async function handleVote(card, e) {
-            const id = Number(card.dataset.id);
-            const btn = card.querySelector('.btn-fire');
-            const countEl = card.querySelector('.vote-count');
-            
-            if (localStorage.getItem(`voted_${id}`)) {
-                toast('Вы уже проголосовали! 🔥', 'info'); return;
-            }
+    let lastTap = 0;
+    grid.addEventListener('click', e => {
+        const card = e.target.closest('.card'); if (!card) return;
+        const now = Date.now();
+        if (now - lastTap < 350) { handleVote(card, e); lastTap = 0; } else { lastTap = now; }
+    });
 
-            // Оптимистичное обновление
-            votes[id] = (votes[id] || 0) + 1;
-            countEl.textContent = votes[id] + ' 🔥';
-            btn.classList.add('voted');
-            localStorage.setItem(`voted_${id}`, 'true');
+    async function handleVote(card, e) {
+        const id = Number(card.dataset.id);
+        const btn = card.querySelector('.btn-fire');
+        const countEl = card.querySelector('.vote-count');
+        if (localStorage.getItem(`voted_${id}`)) { toast('Вы уже проголосовали!', 'info'); return; }
+        
+        votes[id] = (votes[id] || 0) + 1;
+        countEl.textContent = votes[id] + ' 🔥';
+        btn.classList.add('voted');
+        localStorage.setItem(`voted_${id}`, 'true');
+        
+        await submitVote(id);
+        
+        flash.style.setProperty('--fx', e.clientX+'px'); flash.style.setProperty('--fy', e.clientY+'px');
+        flash.classList.add('active'); setTimeout(()=>flash.classList.remove('active'), 200);
+        spawnParticles(e.clientX, e.clientY);
+        if(navigator.vibrate) navigator.vibrate(30);
+    }
 
-            // Отправка на сервер
-            await submitVote(id);
-
-            // Эффекты
-            flash.style.setProperty('--fx', e.clientX+'px');
-            flash.style.setProperty('--fy', e.clientY+'px');
-            flash.classList.add('active');
-            setTimeout(()=>flash.classList.remove('active'), 200);
-            spawnParticles(e.clientX, e.clientY);
-            if(navigator.vibrate) navigator.vibrate(30);
-        }
-
-        /* ===== ЭФФЕКТЫ ===== */
-        function spawnParticles(x, y) {
-            ['🔥','✨','💥'].forEach(() => {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.textContent = ['🔥','✨','💥'][Math.floor(Math.random()*3)];
-                const a = Math.random()*Math.PI*2, d = 50+Math.random()*60;
-                p.style.left=x+'px'; p.style.top=y+'px';
-                p.style.setProperty('--tx', Math.cos(a)*d+'px');
-                p.style.setProperty('--ty', Math.sin(a)*d+'px');
-                p.style.setProperty('--rot', Math.random()*360+'deg');
-                document.body.appendChild(p);
-                setTimeout(()=>p.remove(), 800);
-            });
-        }
-
-        function toast(msg, type) {
-            const t = document.createElement('div');
-            t.style.cssText = `position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:${type==='info'?'#333':'#16a34a'};color:#fff;padding:10px 20px;border-radius:20px;font-size:0.9rem;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;`;
-            t.textContent = msg; document.body.appendChild(t);
-            requestAnimationFrame(()=>t.style.opacity=1);
-            setTimeout(()=>{t.style.opacity=0; setTimeout(()=>t.remove(),300);},2000);
-        }
-
-        /* ===== ФИЛЬТРЫ ===== */
-        filters.forEach(f => f.addEventListener('click', () => {
-            filters.forEach(c => c.classList.remove('active'));
-            f.classList.add('active');
-            const filter = f.dataset.filter;
-            let list = [...PRODUCTS];
-            if (filter !== 'all') list = list.filter(p => p.category.toLowerCase() === filter.toLowerCase());
-            renderGrid(list);
-        }));
-
-        /* ===== SCROLL & TILT ===== */
-        window.addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 50), { passive: true });
-        let tiltCard = null;
-        grid.addEventListener('mousemove', e => {
-            const card = e.target.closest('.card'); if(!card) return;
-            const inner = card.querySelector('.card-inner');
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left)/rect.width - 0.5;
-            const y = (e.clientY - rect.top)/rect.height - 0.5;
-            inner.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;
-            tiltCard = card;
+    function spawnParticles(x, y) {
+        ['🔥','✨','💥'].forEach(() => {
+            const p = document.createElement('div'); p.className = 'particle';
+            p.textContent = ['🔥','✨','💥'][Math.floor(Math.random()*3)];
+            const a = Math.random()*Math.PI*2, d = 50+Math.random()*60;
+            p.style.left=x+'px'; p.style.top=y+'px';
+            p.style.setProperty('--tx', Math.cos(a)*d+'px');
+            p.style.setProperty('--ty', Math.sin(a)*d+'px');
+            p.style.setProperty('--rot', Math.random()*360+'deg');
+            document.body.appendChild(p); setTimeout(()=>p.remove(), 800);
         });
-        grid.addEventListener('mouseleave', () => { if(tiltCard){tiltCard.querySelector('.card-inner').style.transform='';tiltCard=null;} });
+    }
 
-        /* ===== СТАРТ ===== */
-        init();
-    </script>
-</body>
-</html>
+    function toast(msg, type) {
+        const t = document.createElement('div');
+        t.style.cssText = `position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:${type==='info'?'#333':'#16a34a'};color:#fff;padding:10px 20px;border-radius:20px;font-size:0.9rem;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;`;
+        t.textContent = msg; document.body.appendChild(t);
+        requestAnimationFrame(()=>t.style.opacity=1);
+        setTimeout(()=>{t.style.opacity=0; setTimeout(()=>t.remove(),300);},2000);
+    }
+
+    filters.forEach(f => f.addEventListener('click', () => {
+        filters.forEach(c => c.classList.remove('active'));
+        f.classList.add('active');
+        const filter = f.dataset.filter;
+        let list = [...PRODUCTS];
+        if (filter !== 'all') list = list.filter(p => p.category.toLowerCase() === filter.toLowerCase());
+        renderGrid(list);
+    }));
+
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 50), { passive: true });
+    let tiltCard = null;
+    grid.addEventListener('mousemove', e => {
+        const card = e.target.closest('.card'); if(!card) return;
+        const inner = card.querySelector('.card-inner');
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left)/rect.width - 0.5;
+        const y = (e.clientY - rect.top)/rect.height - 0.5;
+        inner.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;
+        tiltCard = card;
+    });
+    grid.addEventListener('mouseleave', () => { if(tiltCard){tiltCard.querySelector('.card-inner').style.transform='';tiltCard=null;} });
+
+    init();
+</script>
