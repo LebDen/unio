@@ -16,12 +16,9 @@
     <meta name="twitter:title" content="UNIO | BETA ACCESS">
     <meta name="twitter:description" content="Тест спроса на мужскую одежду. Голосуйте за модели.">
     <title>UNIO | BETA ACCESS</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVU5JTyIsInNob3J0X25hbWUiOiJVTklPIiwiZGVzY3JpcHRpb24iOiJUZXN0IHNwcmVkIG9uIG1lbidzIGNsb3RoaW5nIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMzAzMDMiLCJ0aGVtZV9jb2xvciI6IiMwMzAzMDMiLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9wbGFjZWhvbGQuY28vMTkyeDE5Mi8wMzAzMDMvZmZmP3RleHQ9VU5JTyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifV19">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #030303;
@@ -44,11 +41,11 @@
             --shadow: 0 8px 32px rgba(0,0,0,0.4);
             --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
         }
-        
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
         body { overflow-x: hidden; min-height: 100vh; position: relative; }
-        
+
         /* Noise texture */
         body::before {
             content: ''; position: fixed; inset: -50%; width: 200%; height: 200%;
@@ -56,18 +53,18 @@
             opacity: 0.05; pointer-events: none; z-index: 0; animation: grain 0.6s steps(1) infinite;
         }
         @keyframes grain { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-3%,-5%)} 30%{transform:translate(4%,-8%)} 50%{transform:translate(-2%,6%)} 70%{transform:translate(6%,3%)} 90%{transform:translate(-4%,2%)} }
-        
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-        
+
         a { color: inherit; text-decoration: none; transition: color 0.2s; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; user-select: none; -webkit-tap-highlight-color: transparent; }
         img { display: block; max-width: 100%; height: auto; }
         input, textarea { font-family: inherit; }
-        
+
         /* ===== INTRO ===== */
         #intro {
             position: fixed; inset: 0; z-index: 100;
@@ -76,25 +73,34 @@
             transition: transform 1s var(--ease), opacity 0.8s var(--ease);
         }
         #intro.up { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .intro-content { text-align: center; }
         .intro-logo {
             font-size: clamp(4rem, 15vw, 12rem);
-            font-weight: 800; letter-spacing: -0.05em;
+            font-weight: 900; letter-spacing: -0.06em;
             opacity: 0; transform: scale(0.8) translateY(30px);
             animation: logoReveal 1.2s var(--ease) 0.3s forwards;
+            position: relative;
+        }
+        .intro-logo::after {
+            content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text), transparent);
+            animation: lineDraw 0.8s var(--ease) 0.8s forwards;
         }
         .intro-sub {
             font-family: var(--font-mono); font-size: 0.8rem;
             letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);
-            margin-top: 16px; opacity: 0; transform: translateY(10px);
+            margin-top: 24px; opacity: 0; transform: translateY(10px);
             animation: fadeUp 0.8s var(--ease) 1.2s forwards;
         }
         @keyframes logoReveal { 0%{opacity:0;transform:scale(0.8) translateY(30px)} 50%{opacity:1;transform:scale(1.02) translateY(-5px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+        @keyframes lineDraw { to { width: 160px; } }
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
         /* ===== FLASH ===== */
         #flash {
             position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-            background: radial-gradient(circle at var(--fx) var(--fy), rgba(255,61,0,0.2), transparent 50%);
+            background: radial-gradient(circle at var(--fx) var(--fy), rgba(255,61,0,0.25), transparent 50%);
             opacity: 0; transition: opacity 0.15s;
         }
         #flash.active { opacity: 1; }
@@ -133,7 +139,7 @@
         @keyframes pulseGlow { 0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)} 50%{opacity:0.8;transform:translateX(-50%) scale(1.05)} }
         h1 {
             font-size: clamp(3.5rem, 10vw, 9rem);
-            font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 24px;
+            font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 24px;
         }
         h1 em { font-style: italic; font-weight: 300; color: var(--text-muted); }
         .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; margin-bottom: 40px; line-height: 1.6; }
@@ -198,7 +204,7 @@
         .catalog { padding: 80px 20px 100px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
         .catalog-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; flex-wrap: wrap; gap: 20px; }
         .sec-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
-        
+
         .filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
         .chip {
             font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
@@ -207,7 +213,7 @@
         }
         .chip:hover { color: var(--text); border-color: var(--border-strong); }
         .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-        
+
         .search-box {
             position: relative; width: 200px;
         }
@@ -220,7 +226,7 @@
         .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 24px; }
-        
+
         .card { position: relative; perspective: 1000px; }
         .card-inner { transition: transform 0.15s ease-out; transform-style: preserve-3d; }
         .card-img-wrap {
@@ -234,13 +240,13 @@
             transition: all 0.6s var(--ease);
         }
         .card:hover .card-img-wrap img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
-        
+
         .card-overlay {
             position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6));
             opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
         .card:hover .card-overlay { opacity: 1; }
-        
+
         .btn-fire {
             position: absolute; bottom: 16px; right: 16px;
             width: 48px; height: 48px; border-radius: 50%;
@@ -254,7 +260,7 @@
             box-shadow: 0 0 25px var(--accent-glow), 0 0 50px rgba(255,61,0,0.2);
             transform: scale(1.15);
         }
-        
+
         .vote-count {
             position: absolute; top: 16px; left: 16px;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
@@ -263,7 +269,7 @@
             opacity: 0; transform: translateY(-8px); transition: all 0.3s; z-index: 5;
         }
         .card:hover .vote-count { opacity: 1; transform: translateY(0); }
-        
+
         .card-info { padding: 16px 0 0; display: flex; justify-content: space-between; align-items: baseline; }
         .card-title { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; }
         .card-price { font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted); }
@@ -374,7 +380,7 @@
 <body>
     <div id="flash"></div>
     <div id="intro"><div><h1 class="intro-logo">UNIO</h1><p class="intro-sub">Будь собой · Будь в UNIO</p></div></div>
-    
+
     <header id="header">
         <div class="logo">UNIO <span>BETA</span></div>
         <div class="header-actions">
@@ -387,7 +393,7 @@
         <section class="hero">
             <h1>UNIO<br><em>Будь собой.</em></h1>
             <p class="hero-desc">Двойной тап по карточке, чтобы поставить огонь 🔥<br>Собираем самые горячие модели.</p>
-            
+
             <div class="email-section">
                 <div class="email-title">Получи ранний доступ и скидку 15%</div>
                 <form class="email-form" onsubmit="handleEmail(event)">
@@ -488,12 +494,11 @@
 
     <script>
         /* ===== CONFIG ===== */
-        // 🔑 ЗАМЕНИТЕ НА ВАШИ КЛЮЧИ SUPABASE (создайте проект на supabase.com)
         const SUPABASE_URL = 'https://your-project.supabase.co';
         const SUPABASE_KEY = 'your-anon-key';
-        const TELEGRAM_BOT_TOKEN = ''; // Опционально: токен бота для уведомлений
-        const TELEGRAM_CHAT_ID = '';   // Опционально: ID чата/канала
-        
+        const TELEGRAM_BOT_TOKEN = '';
+        const TELEGRAM_CHAT_ID = '';
+
         const PRODUCTS = [
             { id: 1, title: 'Базовая х/б футболка', category: 'верх', price: '1 990 ₽', desc: 'Плотный хлопок, прямой крой. Идеальная база для любого образа.', img: 'https://placehold.co/600x800/18181b/52525b?text=Футболка' },
             { id: 2, title: 'Рубашка оверсайз', category: 'верх', price: '3 490 ₽', desc: 'Свободный крой, хлопок-лён. Дышащая ткань для лета.', img: 'https://placehold.co/600x800/18181b/52525b?text=Рубашка' },
@@ -505,12 +510,11 @@
             { id: 8, title: 'Сумка кросс-боди', category: 'аксессуары', price: '2 490 ₽', desc: 'Компактная, влагозащита. Регулируемый ремень.', img: 'https://placehold.co/600x800/18181b/52525b?text=Сумка' }
         ];
 
-        /* ===== STATE ===== */
         let votes = {};
         let emails = [];
         let visits = 0;
         let currentModalId = null;
-        
+
         try {
             const v = localStorage.getItem('unio_votes'); if(v) votes = JSON.parse(v);
             const e = localStorage.getItem('unio_emails'); if(e) emails = JSON.parse(e);
@@ -525,40 +529,6 @@
         const flash = document.getElementById('flash');
         const filters = document.querySelectorAll('.filters .chip');
         const searchInput = document.getElementById('search-input');
-
-        /* ===== SUPABASE HELPERS (опционально) ===== */
-        async function supabaseVote(id, count) {
-            if(!SUPABASE_URL.includes('supabase.co')) return;
-            try {
-                await fetch(`${SUPABASE_URL}/rest/v1/votes?id=eq.${id}`, {
-                    method: 'PATCH',
-                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-                    body: JSON.stringify({ count: count })
-                });
-            } catch(e) {}
-        }
-        
-        async function supabaseEmail(email) {
-            if(!SUPABASE_URL.includes('supabase.co')) return;
-            try {
-                await fetch(`${SUPABASE_URL}/rest/v1/emails`, {
-                    method: 'POST',
-                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, created_at: new Date().toISOString() })
-                });
-            } catch(e) {}
-        }
-
-        async function sendTelegram(msg) {
-            if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-            try {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'HTML' })
-                });
-            } catch(e) {}
-        }
 
         /* ===== INTRO ===== */
         setTimeout(() => {
@@ -584,9 +554,9 @@
         function renderGrid(list) {
             grid.innerHTML = '';
             if(!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Ничего не найдено</div>'; return; }
-            
+
             const topIds = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).slice(0,3).map(p=>p.id);
-            
+
             list.forEach((p, i) => {
                 const v = votes[p.id] || 0;
                 const isTop = topIds.includes(p.id) && v > 0;
@@ -619,11 +589,11 @@
             try { localStorage.setItem('unio_votes', JSON.stringify(votes)); } catch{}
             supabaseVote(id, votes[id]);
             if(votes[id]) sendTelegram(`🔥 Новый голос за <b>${PRODUCTS.find(p=>p.id===id)?.title}</b>! Всего: ${votes[id]}`);
-            
+
             btn.classList.toggle('voted', votes[id]>0);
             const countEl = btn.parentElement.querySelector('.vote-count');
             countEl.textContent = votes[id] ? votes[id] + ' 🔥' : '';
-            
+
             if(votes[id]) {
                 spawnParticles(e.clientX, e.clientY);
                 flash.style.setProperty('--fx', e.clientX+'px'); flash.style.setProperty('--fy', e.clientY+'px');
@@ -660,9 +630,9 @@
             activeFilter = f.dataset.filter;
             applyFilters();
         }));
-        
+
         searchInput.addEventListener('input', applyFilters);
-        
+
         function applyFilters() {
             const q = searchInput.value.toLowerCase().trim();
             let list = [...PRODUCTS];
@@ -708,15 +678,15 @@
             const msg = document.getElementById('email-msg');
             const email = inp.value.trim();
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
+
             if(!re.test(email)) { msg.textContent='Введите корректный email'; msg.className='email-msg error'; return; }
             if(emails.includes(email)) { msg.textContent='Вы уже подписаны'; msg.className='email-msg error'; return; }
-            
+
             emails.push(email);
             try { localStorage.setItem('unio_emails', JSON.stringify(emails)); } catch{}
             supabaseEmail(email);
             sendTelegram(`📧 Новая подписка: <b>${email}</b>`);
-            
+
             inp.value = '';
             msg.textContent = '✅ Вы в списке! Проверьте почту за 72 часа до запуска.';
             msg.className = 'email-msg success';
@@ -730,15 +700,14 @@
             const pct = Math.min(100, Math.round((tv/60)*100));
             document.getElementById('prog-pct').textContent = pct+'%';
             document.getElementById('prog-fill').style.width = pct+'%';
-            
-            // Admin
+
             document.getElementById('admin-visits').textContent = visits;
             document.getElementById('admin-votes').textContent = tv;
             document.getElementById('admin-emails').textContent = emails.length;
             document.getElementById('admin-conv').textContent = visits ? Math.round((emails.length/visits)*100)+'%' : '0%';
-            
+
             const tbody = document.getElementById('admin-tbody');
-            tbody.innerHTML = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).map(p => 
+            tbody.innerHTML = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).map(p =>
                 `<tr><td>${p.title}</td><td>${p.category}</td><td>${votes[p.id]||0}</td><td>${p.price}</td></tr>`
             ).join('');
         }
@@ -746,7 +715,7 @@
         /* ===== ADMIN ===== */
         window.openAdmin = () => {
             const pass = prompt('Введите пароль администратора:');
-            if(pass === 'unio2026') { // Замените на свой пароль
+            if(pass === 'unio2026') {
                 document.getElementById('admin').classList.add('open');
                 updateStats();
             } else if(pass !== null) toast('Неверный пароль', 'error');
@@ -756,7 +725,7 @@
         /* ===== SHARE ===== */
         window.sharePage = () => shareItem('UNIO | Тест ниши', `UNIO — тест мужской одежды. Голосуйте! Решение — 01.08.2026. ${location.href}`);
         window.shareProduct = (title) => shareItem(`UNIO: ${title}`, `Я голосую за "${title}" в UNIO. Присоединяйся: ${location.href}`);
-        
+
         async function shareItem(title, text) {
             if(navigator.share) { try{await navigator.share({title,text,url:location.href});return}catch{} }
             try{await navigator.clipboard.writeText(text);toast('Ссылка скопирована','success')}catch{toast('Ошибка','error')}
@@ -787,6 +756,40 @@
 
         /* ===== KEYBOARD ===== */
         document.addEventListener('keydown', e => { if(e.key==='Escape'){closeModal();closeAdmin();} });
+
+        /* ===== SUPABASE HELPERS ===== */
+        async function supabaseVote(id, count) {
+            if(!SUPABASE_URL.includes('supabase.co')) return;
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/votes?id=eq.${id}`, {
+                    method: 'PATCH',
+                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+                    body: JSON.stringify({ count: count })
+                });
+            } catch(e) {}
+        }
+
+        async function supabaseEmail(email) {
+            if(!SUPABASE_URL.includes('supabase.co')) return;
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/emails`, {
+                    method: 'POST',
+                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, created_at: new Date().toISOString() })
+                });
+            } catch(e) {}
+        }
+
+        async function sendTelegram(msg) {
+            if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'HTML' })
+                });
+            } catch(e) {}
+        }
 
         /* ===== INIT ===== */
         renderGrid(PRODUCTS);
