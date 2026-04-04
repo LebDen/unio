@@ -46,7 +46,6 @@
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
         body { overflow-x: hidden; min-height: 100vh; position: relative; }
 
-        /* Noise texture */
         body::before {
             content: ''; position: fixed; inset: -50%; width: 200%; height: 200%;
             background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -54,7 +53,6 @@
         }
         @keyframes grain { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-3%,-5%)} 30%{transform:translate(4%,-8%)} 50%{transform:translate(-2%,6%)} 70%{transform:translate(6%,3%)} 90%{transform:translate(-4%,2%)} }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
@@ -63,7 +61,6 @@
         a { color: inherit; text-decoration: none; transition: color 0.2s; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; user-select: none; -webkit-tap-highlight-color: transparent; }
         img { display: block; max-width: 100%; height: auto; }
-        input, textarea { font-family: inherit; }
 
         /* ===== INTRO ===== */
         #intro {
@@ -142,37 +139,6 @@
             font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 24px;
         }
         h1 em { font-style: italic; font-weight: 300; color: var(--text-muted); }
-        .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; margin-bottom: 40px; line-height: 1.6; }
-        .scroll-hint {
-            position: absolute; bottom: 40px; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
-            display: flex; flex-direction: column; align-items: center; gap: 8px; animation: bounce 2s ease infinite;
-        }
-        .scroll-hint span { width: 1px; height: 30px; background: var(--text-muted); }
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
-
-        /* ===== EMAIL CAPTURE ===== */
-        .email-section {
-            max-width: 480px; margin: 0 auto 60px; padding: 24px;
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
-        }
-        .email-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; text-align: center; }
-        .email-form { display: flex; gap: 8px; }
-        .email-input {
-            flex: 1; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border);
-            border-radius: var(--radius); color: var(--text); font-size: 0.9rem; outline: none;
-            transition: border-color 0.2s;
-        }
-        .email-input:focus { border-color: var(--text); }
-        .email-input::placeholder { color: var(--text-muted); }
-        .btn-submit {
-            padding: 12px 20px; background: var(--text); color: var(--bg); border-radius: var(--radius);
-            font-weight: 600; font-size: 0.85rem; transition: all 0.2s;
-        }
-        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-submit:disabled { opacity: 0.5; cursor: default; transform: none; }
-        .email-msg { margin-top: 10px; font-size: 0.8rem; text-align: center; min-height: 20px; }
-        .email-msg.success { color: var(--success); }
-        .email-msg.error { color: var(--warning); }
 
         /* ===== MARQUEE ===== */
         .marquee {
@@ -213,17 +179,6 @@
         }
         .chip:hover { color: var(--text); border-color: var(--border-strong); }
         .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-        .search-box {
-            position: relative; width: 200px;
-        }
-        .search-input {
-            width: 100%; padding: 8px 12px 8px 32px; background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius-full); color: var(--text); font-size: 0.8rem; outline: none;
-            transition: border-color 0.2s;
-        }
-        .search-input:focus { border-color: var(--text); }
-        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 24px; }
 
@@ -369,8 +324,6 @@
             .timer-container { gap: 10px; }
             .time-block { padding: 12px 16px; min-width: auto; flex: 1; }
             .time-val { font-size: 1.5rem; }
-            .email-form { flex-direction: column; }
-            .search-box { width: 100%; }
         }
         @media(max-width: 480px) {
             .grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
@@ -392,20 +345,6 @@
     <main>
         <section class="hero">
             <h1>UNIO<br><em>Будь собой.</em></h1>
-            <p class="hero-desc">Двойной тап по карточке, чтобы поставить огонь 🔥<br>Собираем самые горячие модели.</p>
-
-            <div class="email-section">
-                <div class="email-title">Получи ранний доступ и скидку 15%</div>
-                <form class="email-form" onsubmit="handleEmail(event)">
-                    <input type="email" class="email-input" placeholder="your@email.ru" required autocomplete="email">
-                    <button type="submit" class="btn-submit">Подписаться</button>
-                </form>
-                <div class="email-msg" id="email-msg"></div>
-            </div>
-
-            <div class="scroll-hint">
-                <span>Каталог</span>
-            </div>
         </section>
 
         <div class="marquee">
@@ -439,10 +378,6 @@
                     <button class="chip" data-filter="верх">Верх</button>
                     <button class="chip" data-filter="низ">Низ</button>
                     <button class="chip" data-filter="аксессуары">Аксессуары</button>
-                    <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="search-input" placeholder="Поиск...">
-                    </div>
                 </div>
             </div>
             <div class="grid" id="grid"></div>
@@ -511,13 +446,11 @@
         ];
 
         let votes = {};
-        let emails = [];
         let visits = 0;
         let currentModalId = null;
 
         try {
             const v = localStorage.getItem('unio_votes'); if(v) votes = JSON.parse(v);
-            const e = localStorage.getItem('unio_emails'); if(e) emails = JSON.parse(e);
             const vis = localStorage.getItem('unio_visits'); visits = vis ? parseInt(vis) : 0;
             visits++;
             localStorage.setItem('unio_visits', visits);
@@ -528,7 +461,6 @@
         const grid = document.getElementById('grid');
         const flash = document.getElementById('flash');
         const filters = document.querySelectorAll('.filters .chip');
-        const searchInput = document.getElementById('search-input');
 
         /* ===== INTRO ===== */
         setTimeout(() => {
@@ -622,7 +554,7 @@
             }
         }
 
-        /* ===== FILTERS & SEARCH ===== */
+        /* ===== FILTERS ===== */
         let activeFilter = 'all';
         filters.forEach(f => f.addEventListener('click', () => {
             filters.forEach(c => c.classList.remove('active'));
@@ -631,13 +563,9 @@
             applyFilters();
         }));
 
-        searchInput.addEventListener('input', applyFilters);
-
         function applyFilters() {
-            const q = searchInput.value.toLowerCase().trim();
             let list = [...PRODUCTS];
             if(activeFilter !== 'all') list = list.filter(p => p.category === activeFilter);
-            if(q) list = list.filter(p => p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
             renderGrid(list);
         }
 
@@ -671,29 +599,6 @@
             if(p) shareProduct(p.title);
         };
 
-        /* ===== EMAIL ===== */
-        window.handleEmail = (e) => {
-            e.preventDefault();
-            const inp = e.target.querySelector('input');
-            const msg = document.getElementById('email-msg');
-            const email = inp.value.trim();
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if(!re.test(email)) { msg.textContent='Введите корректный email'; msg.className='email-msg error'; return; }
-            if(emails.includes(email)) { msg.textContent='Вы уже подписаны'; msg.className='email-msg error'; return; }
-
-            emails.push(email);
-            try { localStorage.setItem('unio_emails', JSON.stringify(emails)); } catch{}
-            supabaseEmail(email);
-            sendTelegram(`📧 Новая подписка: <b>${email}</b>`);
-
-            inp.value = '';
-            msg.textContent = '✅ Вы в списке! Проверьте почту за 72 часа до запуска.';
-            msg.className = 'email-msg success';
-            updateStats();
-            toast('Подписка оформлена!', 'success');
-        };
-
         /* ===== STATS ===== */
         function updateStats() {
             const tv = Object.values(votes).reduce((a,b)=>a+b,0);
@@ -703,8 +608,8 @@
 
             document.getElementById('admin-visits').textContent = visits;
             document.getElementById('admin-votes').textContent = tv;
-            document.getElementById('admin-emails').textContent = emails.length;
-            document.getElementById('admin-conv').textContent = visits ? Math.round((emails.length/visits)*100)+'%' : '0%';
+            document.getElementById('admin-emails').textContent = '0'; // Email block removed
+            document.getElementById('admin-conv').textContent = '0%'; // Email block removed
 
             const tbody = document.getElementById('admin-tbody');
             tbody.innerHTML = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).map(p =>
@@ -765,17 +670,6 @@
                     method: 'PATCH',
                     headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
                     body: JSON.stringify({ count: count })
-                });
-            } catch(e) {}
-        }
-
-        async function supabaseEmail(email) {
-            if(!SUPABASE_URL.includes('supabase.co')) return;
-            try {
-                await fetch(`${SUPABASE_URL}/rest/v1/emails`, {
-                    method: 'POST',
-                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, created_at: new Date().toISOString() })
                 });
             } catch(e) {}
         }
