@@ -3,371 +3,611 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="UNIO — BETA: тестирование спроса на мужскую одежду. Голосуйте за модели. Решение — 01.08.2026">
-    <meta name="theme-color" content="#030303">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="UNIO | Тест ниши — мужская одежда по себестоимости">
-    <meta property="og:description" content="Голосуйте за модели. Только популярные попадут в производство. Запуск — 01.08.2026">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://unio-project.github.io/unio/">
-    <meta property="og:image" content="https://unio-project.github.io/unio/og-preview.jpg">
-    <meta property="og:locale" content="ru_RU">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="UNIO | BETA ACCESS">
-    <meta name="twitter:description" content="Тест спроса на мужскую одежду. Голосуйте за модели.">
-    <title>UNIO | BETA ACCESS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="UNIO — тестирование спроса на мужскую одежду.">
+    <title>UNIO | FIRE DROP</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=space-grotesk@300,400,500,700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #030303;
-            --surface: #0a0a0a;
-            --surface-hover: #141414;
-            --border: rgba(255,255,255,0.06);
-            --border-strong: rgba(255,255,255,0.15);
-            --text: #f4f4f5;
-            --text-muted: #6b6b6b;
-            --accent: #ff3d00;
-            --accent-glow: rgba(255, 61, 0, 0.4);
-            --success: #4ade80;
-            --warning: #fbbf24;
-            --radius: 8px;
-            --radius-lg: 16px;
-            --font-sans: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
-            --shadow: 0 8px 32px rgba(0,0,0,0.4);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
+            --card-bg: #0a0a0a;
+            --border: #222;
+            --text: #fff;
+            --muted: #555;
+            --fire: #ff3d00;
+            --fire-glow: rgba(255, 61, 0, 0.5);
+            --font-head: 'Clash Display', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
-        body { overflow-x: hidden; min-height: 100vh; position: relative; }
-
-        body::before {
-            content: ''; position: fixed; inset: -50%; width: 200%; height: 200%;
-            background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            opacity: 0.05; pointer-events: none; z-index: 0; animation: grain 0.6s steps(1) infinite;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        @keyframes grain { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-3%,-5%)} 30%{transform:translate(4%,-8%)} 50%{transform:translate(-2%,6%)} 70%{transform:translate(6%,3%)} 90%{transform:translate(-4%,2%)} }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+        }
 
-        a { color: inherit; text-decoration: none; transition: color 0.2s; }
-        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; user-select: none; -webkit-tap-highlight-color: transparent; }
-        img { display: block; max-width: 100%; height: auto; }
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+            /* Noise texture */
+            body::before {
+                content: '';
+                position: fixed;
+                inset: -50%;
+                width: 200%;
+                height: 200%;
+                background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+                opacity: 0.06;
+                pointer-events: none;
+                z-index: 0;
+                animation: grain 0.5s steps(1) infinite;
+            }
+
+        @keyframes grain {
+            0%,100% {
+                transform: translate(0,0)
+            }
+
+            10% {
+                transform: translate(-5%,-10%)
+            }
+
+            30% {
+                transform: translate(3%,-15%)
+            }
+
+            50% {
+                transform: translate(12%,9%)
+            }
+
+            70% {
+                transform: translate(9%,4%)
+            }
+
+            90% {
+                transform: translate(-1%,7%)
+            }
+        }
 
         /* ===== INTRO ===== */
         #intro {
-            position: fixed; inset: 0; z-index: 100;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
             background: var(--bg);
-            display: grid; place-items: center;
-            transition: transform 1s var(--ease), opacity 0.8s var(--ease);
+            display: grid;
+            place-items: center;
+            transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
         }
-        #intro.up { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-        .intro-content { text-align: center; }
-        .intro-logo {
-            font-size: clamp(4rem, 15vw, 12rem);
-            font-weight: 900; letter-spacing: -0.06em;
-            opacity: 0; transform: scale(0.8) translateY(30px);
-            animation: logoReveal 1.2s var(--ease) 0.3s forwards;
-            position: relative;
-        }
-        .intro-logo::after {
-            content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--text), transparent);
-            animation: lineDraw 0.8s var(--ease) 0.8s forwards;
-        }
-        .intro-sub {
-            font-family: var(--font-mono); font-size: 0.8rem;
-            letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);
-            margin-top: 24px; opacity: 0; transform: translateY(10px);
-            animation: fadeUp 0.8s var(--ease) 1.2s forwards;
-        }
-        @keyframes logoReveal { 0%{opacity:0;transform:scale(0.8) translateY(30px)} 50%{opacity:1;transform:scale(1.02) translateY(-5px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
-        @keyframes lineDraw { to { width: 160px; } }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* ===== FLASH ===== */
-        #flash {
-            position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-            background: radial-gradient(circle at var(--fx) var(--fy), rgba(255,61,0,0.25), transparent 50%);
-            opacity: 0; transition: opacity 0.15s;
+            #intro.up {
+                transform: translateY(-100%);
+            }
+
+        .intro-logo {
+            font-family: var(--font-head);
+            font-size: clamp(4rem, 18vw, 14rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            opacity: 0;
+            animation: popIn 1s ease 0.4s forwards;
         }
-        #flash.active { opacity: 1; }
+
+        .intro-sub {
+            position: absolute;
+            bottom: 12vh;
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--muted);
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1.2s forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.7) translateY(40px)
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.05) translateY(-5px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0)
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ===== SCREEN FLASH ===== */
+        #flash {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            background: radial-gradient(circle at var(--fx) var(--fy), rgba(255,61,0,0.25), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+            #flash.active {
+                opacity: 1;
+            }
 
         /* ===== HEADER ===== */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 90;
-            padding: 16px 24px;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(3,3,3,0.7); backdrop-filter: blur(14px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 90;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid transparent;
+            background: rgba(3,3,3,0.7);
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+            header.scrolled {
+                border-bottom-color: var(--border);
+                background: rgba(3,3,3,0.95);
+            }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+            .logo span {
+                font-size: 0.65em;
+                color: var(--muted);
+                border: 1px solid var(--muted);
+                padding: 2px 8px;
+                margin-left: 6px;
+            }
+
+        .btn-share {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            color: var(--muted);
             transition: all 0.3s;
         }
-        header.scrolled { border-bottom-color: var(--border); background: rgba(3,3,3,0.95); }
-        .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
-        .logo span { font-size: 0.6em; font-family: var(--font-mono); font-weight: 400; color: var(--text-muted); border: 1px solid var(--border-strong); padding: 2px 8px; border-radius: 4px; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .btn-icon {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 1px solid var(--border); display: grid; place-items: center;
-            font-size: 1.1rem; transition: all 0.2s;
-        }
-        .btn-icon:hover { border-color: var(--text); background: var(--surface-hover); }
+
+            .btn-share:hover {
+                color: var(--text);
+                border-color: var(--text);
+                background: var(--text);
+                color: var(--bg);
+            }
 
         /* ===== HERO ===== */
         .hero {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 100px 20px 60px; text-align: center; position: relative; z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
         }
-        .hero::after {
-            content: ''; position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-            width: 80vw; height: 80vw; max-width: 600px; max-height: 600px;
-            background: radial-gradient(circle, rgba(255,61,0,0.05) 0%, transparent 70%);
-            pointer-events: none; z-index: -1; animation: pulseGlow 5s ease-in-out infinite;
+
+            .hero::after {
+                content: '';
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80vw;
+                height: 80vw;
+                max-width: 600px;
+                max-height: 600px;
+                background: radial-gradient(circle, rgba(255,61,0,0.06) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: -1;
+                animation: pulseGlow 4s ease-in-out infinite;
+            }
+
+        @keyframes pulseGlow {
+            0%,100% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.1)
+            }
         }
-        @keyframes pulseGlow { 0%,100%{opacity:0.4;transform:translateX(-50%) scale(1)} 50%{opacity:0.8;transform:translateX(-50%) scale(1.05)} }
+
         h1 {
-            font-size: clamp(3.5rem, 10vw, 9rem);
-            font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 24px;
+            font-family: var(--font-head);
+            font-size: clamp(3.5rem, 11vw, 10rem);
+            line-height: 0.88;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
         }
-        h1 em { font-style: italic; font-weight: 300; color: var(--text-muted); }
+
+            h1 em {
+                font-style: italic;
+                font-weight: 300;
+                color: var(--muted);
+            }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 520px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%,100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(8px)
+            }
+        }
 
         /* ===== MARQUEE ===== */
         .marquee {
-            width: 100%; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            padding: 12px 0; background: var(--bg); position: relative; z-index: 2;
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            background: var(--bg);
+            position: relative;
+            z-index: 2;
         }
-        .marquee-track { display: flex; animation: scroll 30s linear infinite; width: max-content; }
-        .marquee-track span { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; padding: 0 30px; }
-        @keyframes scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-        /* ===== COUNTDOWN ===== */
-        .countdown-section { padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .timer-container { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-        .time-block {
-            background: var(--surface); border: 1px solid var(--border); padding: 16px 20px;
-            min-width: 90px; border-radius: var(--radius); transition: border-color 0.3s;
+        .marquee-track {
+            display: flex;
+            animation: scroll 25s linear infinite;
+            width: max-content;
         }
-        .time-block:hover { border-color: var(--border-strong); }
-        .time-val { font-family: var(--font-mono); font-size: 2rem; font-weight: 600; display: block; line-height: 1; margin-bottom: 4px; }
-        .time-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
 
-        /* ===== PROGRESS ===== */
-        .progress-wrap { max-width: 400px; margin: 0 auto 80px; }
-        .prog-info { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
-        .prog-track { height: 3px; background: var(--surface); border-radius: 2px; overflow: hidden; }
-        .prog-fill { height: 100%; width: 0%; background: var(--accent); transition: width 1s var(--ease); box-shadow: 0 0 10px var(--accent-glow); }
+            .marquee-track span {
+                font-size: 0.75rem;
+                letter-spacing: 0.3em;
+                text-transform: uppercase;
+                color: var(--muted);
+                white-space: nowrap;
+                padding: 0 40px;
+            }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
 
         /* ===== CATALOG ===== */
-        .catalog { padding: 80px 20px 100px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
-        .catalog-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; flex-wrap: wrap; gap: 20px; }
-        .sec-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+        .catalog {
+            padding: 80px 20px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
 
-        .filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .catalog-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sec-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-transform: uppercase;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .chip {
-            font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
-            padding: 8px 16px; border: 1px solid var(--border); color: var(--text-muted);
-            border-radius: var(--radius-full); transition: all 0.2s;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: transparent;
+            transition: all 0.3s;
+            cursor: pointer;
         }
-        .chip:hover { color: var(--text); border-color: var(--border-strong); }
-        .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 24px; }
+            .chip:hover {
+                color: var(--text);
+                border-color: var(--text);
+            }
 
-        .card { position: relative; perspective: 1000px; }
-        .card-inner { transition: transform 0.15s ease-out; transform-style: preserve-3d; }
+            .chip.active {
+                background: var(--text);
+                color: var(--bg);
+                border-color: var(--text);
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px 24px;
+        }
+
+        /* CARD */
+        .card {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+        }
+
         .card-img-wrap {
-            aspect-ratio: 3/4; background: var(--surface); overflow: hidden; position: relative;
-            border: 1px solid var(--border); border-radius: var(--radius-lg); transition: all 0.4s;
+            aspect-ratio: 3/4;
+            background: #0d0d0d;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+            transition: border-color 0.4s;
         }
-        .card:hover .card-img-wrap { border-color: var(--border-strong); }
+
+        .card:hover .card-img-wrap {
+            border-color: rgba(255,255,255,0.3);
+        }
+
         .card-img-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             filter: grayscale(100%) brightness(0.85);
-            transition: all 0.6s var(--ease);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .card:hover .card-img-wrap img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
 
-        .card-overlay {
-            position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6));
-            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        .card:hover .card-img-wrap img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.06);
         }
-        .card:hover .card-overlay { opacity: 1; }
 
+        /* FIRE BUTTON */
         .btn-fire {
-            position: absolute; bottom: 16px; right: 16px;
-            width: 48px; height: 48px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-            display: grid; place-items: center; font-size: 1.3rem;
-            color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.4s var(--ease); z-index: 5; pointer-events: none;
-        }
-        .btn-fire.voted {
-            color: #fff; background: var(--accent); border-color: #fff;
-            box-shadow: 0 0 25px var(--accent-glow), 0 0 50px rgba(255,61,0,0.2);
-            transform: scale(1.15);
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            pointer-events: none;
         }
 
+            .btn-fire.voted {
+                color: #fff;
+                background: var(--fire);
+                border-color: #fff;
+                box-shadow: 0 0 30px var(--fire-glow), 0 0 60px rgba(255,61,0,0.2);
+                transform: scale(1.15);
+            }
+
+        .card-info {
+            padding: 18px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .card-price {
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        /* Vote count badge */
         .vote-count {
-            position: absolute; top: 16px; left: 16px;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
-            padding: 4px 10px; border-radius: 4px;
-            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--text);
-            opacity: 0; transform: translateY(-8px); transition: all 0.3s; z-index: 5;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: all 0.3s;
+            z-index: 5;
         }
-        .card:hover .vote-count { opacity: 1; transform: translateY(0); }
 
-        .card-info { padding: 16px 0 0; display: flex; justify-content: space-between; align-items: baseline; }
-        .card-title { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; }
-        .card-price { font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted); }
-        .card-cat { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            position: fixed; inset: 0; z-index: 200;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            display: grid; place-items: center; padding: 20px;
-            opacity: 0; visibility: hidden; transition: all 0.3s;
+        .card:hover .vote-count {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal {
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
-            max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
-            transform: scale(0.95); transition: transform 0.3s var(--ease);
-        }
-        .modal-overlay.active .modal { transform: scale(1); }
-        .modal-img { aspect-ratio: 4/3; width: 100%; object-fit: cover; }
-        .modal-body { padding: 24px; }
-        .modal-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
-        .modal-desc { color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
-        .modal-price { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; color: var(--accent); margin-bottom: 20px; }
-        .modal-actions { display: flex; gap: 10px; }
-        .btn-modal {
-            flex: 1; padding: 12px; border-radius: var(--radius); font-weight: 600; font-size: 0.85rem;
-            text-align: center; transition: all 0.2s;
-        }
-        .btn-primary { background: var(--text); color: var(--bg); }
-        .btn-primary:hover { opacity: 0.9; }
-        .btn-secondary { border: 1px solid var(--border); color: var(--text); }
-        .btn-secondary:hover { border-color: var(--text); }
-        .modal-close {
-            position: absolute; top: 16px; right: 16px;
-            width: 36px; height: 36px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); display: grid; place-items: center;
-            font-size: 1.2rem; color: var(--text); transition: all 0.2s;
-        }
-        .modal-close:hover { background: var(--text); color: var(--bg); }
-
-        /* ===== ADMIN PANEL ===== */
-        .admin-panel {
-            position: fixed; inset: 0; z-index: 300;
-            background: var(--bg); padding: 24px; overflow-y: auto;
-            transform: translateX(100%); transition: transform 0.4s var(--ease);
-        }
-        .admin-panel.open { transform: translateX(0); }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-        .admin-title { font-size: 1.2rem; font-weight: 700; }
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .admin-stat { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); }
-        .admin-stat-val { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
-        .admin-stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .admin-table th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-weight: 500; }
-        .admin-table td { padding: 12px; border-bottom: 1px solid var(--border); }
-        .admin-table tr:hover td { background: var(--surface); }
-        .btn-admin { padding: 8px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.8rem; transition: all 0.2s; }
-        .btn-admin:hover { border-color: var(--text); }
-
-        /* ===== TOAST ===== */
-        .toasts { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 500; pointer-events: none; }
-        .toast {
-            background: var(--surface); border: 1px solid var(--border); padding: 12px 16px;
-            border-radius: var(--radius); font-size: 0.85rem; min-width: 200px;
-            opacity: 0; transform: translateX(20px); transition: all 0.3s var(--ease);
-            pointer-events: auto; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
-        }
-        .toast.show { opacity: 1; transform: translateX(0); }
-        .toast.success { border-color: var(--success); }
-        .toast.error { border-color: var(--warning); }
 
         /* ===== PARTICLES ===== */
         .particle {
-            position: fixed; pointer-events: none; z-index: 10000;
-            font-size: 1.5rem; opacity: 0;
-            animation: particleFly 0.8s cubic-bezier(0,0,0.2,1) forwards;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            font-size: 1.6rem;
+            opacity: 0;
+            animation: particleFly 0.9s cubic-bezier(0,0,0.2,1) forwards;
         }
+
         @keyframes particleFly {
-            0% { opacity: 1; transform: translate(-50%,-50%) scale(0.3) rotate(0deg); }
-            40% { opacity: 1; }
-            100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2) rotate(var(--rot)); }
+            0% {
+                opacity: 1;
+                transform: translate(-50%,-50%) scale(0.3) rotate(0deg);
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2) rotate(var(--rot));
+            }
         }
 
         /* ===== RESPONSIVE ===== */
         @media(max-width: 768px) {
-            header { padding: 14px 16px; }
-            .catalog { padding: 50px 16px 80px; }
-            .sec-title { font-size: 1.8rem; }
-            .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-            .card-img-wrap { border-radius: var(--radius); }
-            .btn-fire { width: 38px; height: 38px; font-size: 1rem; bottom: 10px; right: 10px; }
-            .card-info { padding: 10px 0 0; }
-            .card-title { font-size: 0.9rem; }
-            .card-price { font-size: 0.8rem; }
-            .timer-container { gap: 10px; }
-            .time-block { padding: 12px 16px; min-width: auto; flex: 1; }
-            .time-val { font-size: 1.5rem; }
+            header {
+                padding: 16px 20px;
+            }
+
+            .catalog {
+                padding: 50px 16px 80px;
+            }
+
+            .sec-title {
+                font-size: 1.8rem;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .card-img-wrap {
+                aspect-ratio: 3/4;
+            }
+
+            .btn-fire {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .card-info {
+                padding: 10px 0 0;
+            }
+
+            .card-title {
+                font-size: 0.95rem;
+            }
+
+            .card-price {
+                font-size: 0.8rem;
+            }
         }
+
         @media(max-width: 480px) {
-            .grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .card-info {
+                flex-direction: column;
+                gap: 4px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Flash overlay -->
     <div id="flash"></div>
-    <div id="intro"><div><h1 class="intro-logo">UNIO</h1><p class="intro-sub">Будь собой · Будь в UNIO</p></div></div>
 
+    <!-- Intro -->
+    <div id="intro">
+        <h1 class="intro-logo">UNIO</h1>
+        <p class="intro-sub">Будь собой · Будь в UNIO</p>
+    </div>
+
+    <!-- Header -->
     <header id="header">
         <div class="logo">UNIO <span>BETA</span></div>
-        <div class="header-actions">
-            <button class="btn-icon" onclick="openAdmin()" title="Админ-панель">⚙️</button>
-            <button class="btn-icon" onclick="sharePage()" title="Поделиться">↗️</button>
-        </div>
+        <button class="btn-share" onclick="sharePage()">Поделиться ↗</button>
     </header>
 
     <main>
         <section class="hero">
             <h1>UNIO<br><em>Будь собой.</em></h1>
+            <p class="hero-desc">Двойной тап по карточке, чтобы поставить огонь 🔥<br>Собираем самые горячие модели.</p>
+            <div class="scroll-hint">↓ Прокрутите вниз</div>
         </section>
 
         <div class="marquee">
-    <div class="marquee-track">
-        <!-- Первый логический блок -->
-        <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
-        <!-- Дубликат для бесшовного цикла -->
-        <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
-    </div>
-</div>
-
-        <section class="countdown-section">
-            <div class="timer-container" aria-live="polite">
-                <div class="time-block"><span class="time-val" id="d">00</span><span class="time-label">Дней</span></div>
-                <div class="time-block"><span class="time-val" id="h">00</span><span class="time-label">Часов</span></div>
-                <div class="time-block"><span class="time-val" id="m">00</span><span class="time-label">Минут</span></div>
-                <div class="time-block"><span class="time-val" id="s">00</span><span class="time-label">Секунд</span></div>
+            <div class="marquee-track">
+                <!-- Первый логический блок -->
+                <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
+                <!-- Дубликат для бесшовного цикла -->
+                <span>🔥 UNIO</span><span>БУДЬ СОБОЙ.</span><span>БУДЬ В UNIO.</span><span>МУЖСКОЙ СТИЛЬ</span><span>КАЧЕСТВО В ДЕТАЛЯХ</span>
             </div>
-        </section>
-
-        <div class="progress-wrap">
-            <div class="prog-info"><span>Прогресс сбора голосов</span><span id="prog-pct">0%</span></div>
-            <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
         </div>
 
         <section class="catalog" id="catalog">
@@ -384,77 +624,24 @@
         </section>
     </main>
 
-    <footer style="padding:50px 20px;text-align:center;color:var(--text-muted);font-size:0.8rem;border-top:1px solid var(--border)">
+    <footer style="padding: 50px 20px; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
         <p>© 2026 UNIO. Пилотный проект. Цены — по себестоимости.</p>
     </footer>
 
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-        <div class="modal" style="position:relative">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <img class="modal-img" id="modal-img" src="" alt="">
-            <div class="modal-body">
-                <div class="card-cat" id="modal-cat"></div>
-                <h3 class="modal-title" id="modal-title"></h3>
-                <p class="modal-desc" id="modal-desc"></p>
-                <div class="modal-price" id="modal-price"></div>
-                <div class="modal-actions">
-                    <button class="btn-modal btn-primary" onclick="voteFromModal()">🔥 Голосовать</button>
-                    <button class="btn-modal btn-secondary" onclick="shareFromModal()">Поделиться</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN PANEL -->
-    <div class="admin-panel" id="admin">
-        <div class="admin-header">
-            <div class="admin-title">⚙️ Админ-панель</div>
-            <button class="btn-admin" onclick="closeAdmin()">Закрыть</button>
-        </div>
-        <div class="admin-grid">
-            <div class="admin-stat"><div class="admin-stat-val" id="admin-visits">0</div><div class="admin-stat-label">Посещений</div></div>
-            <div class="admin-stat"><div class="admin-stat-val" id="admin-votes">0</div><div class="admin-stat-label">Голосов</div></div>
-            <div class="admin-stat"><div class="admin-stat-val" id="admin-emails">0</div><div class="admin-stat-label">Подписок</div></div>
-            <div class="admin-stat"><div class="admin-stat-val" id="admin-conv">0%</div><div class="admin-stat-label">Конверсия</div></div>
-        </div>
-        <h4 style="margin-bottom:12px;color:var(--text-muted)">Топ модели</h4>
-        <table class="admin-table" id="admin-table">
-            <thead><tr><th>Модель</th><th>Категория</th><th>Голоса</th><th>Цена</th></tr></thead>
-            <tbody id="admin-tbody"></tbody>
-        </table>
-    </div>
-
-    <div class="toasts" id="toasts"></div>
-
     <script>
-        /* ===== CONFIG ===== */
-        const SUPABASE_URL = 'https://your-project.supabase.co';
-        const SUPABASE_KEY = 'your-anon-key';
-        const TELEGRAM_BOT_TOKEN = '';
-        const TELEGRAM_CHAT_ID = '';
-
         const PRODUCTS = [
-    { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
-    { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
-    { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
-    { id: 4, title: 'Носки', category: 'Аксессуары', price: '490 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png' },
-    { id: 5, title: 'Ремень кожаный', category: 'аксессуары', price: '1 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-    { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-    { id: 7, title: 'Худи тёплое', category: 'верх', price: '3 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-    { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
-];
+            { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
+            { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
+            { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
+            { id: 4, title: 'Носки', category: 'Аксессуары', price: '490 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png' },
+            { id: 5, title: 'Ремень кожаный', category: 'аксессуары', price: '1 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 7, title: 'Худи тёплое', category: 'верх', price: '3 290 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
+            { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
+        ];
 
         let votes = {};
-        let visits = 0;
-        let currentModalId = null;
-
-        try {
-            const v = localStorage.getItem('unio_votes'); if(v) votes = JSON.parse(v);
-            const vis = localStorage.getItem('unio_visits'); visits = vis ? parseInt(vis) : 0;
-            visits++;
-            localStorage.setItem('unio_visits', visits);
-        } catch(e) {}
+        try { const s = localStorage.getItem('unio_votes'); if (s) votes = JSON.parse(s); } catch (e) { }
 
         const intro = document.getElementById('intro');
         const header = document.getElementById('header');
@@ -462,232 +649,160 @@
         const flash = document.getElementById('flash');
         const filters = document.querySelectorAll('.filters .chip');
 
-        /* ===== INTRO ===== */
+        // ===== INTRO =====
         setTimeout(() => {
             intro.classList.add('up');
-            setTimeout(() => document.getElementById('catalog').scrollIntoView({ behavior: 'smooth', block: 'start' }), 800);
-        }, 2500);
-        window.addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 30), { passive: true });
+            setTimeout(() => document.getElementById('catalog').scrollIntoView({ behavior: 'smooth', block: 'start' }), 1000);
+        }, 2800);
 
-        /* ===== 3D TILT ===== */
-        let tiltCard = null;
+        // ===== HEADER SCROLL =====
+        window.addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 50), { passive: true });
+
+        // ===== 3D TILT ON CARDS =====
+        let currentTiltCard = null;
         grid.addEventListener('mousemove', e => {
-            const card = e.target.closest('.card'); if(!card) return;
+            const card = e.target.closest('.card');
+            if (!card) return;
             const inner = card.querySelector('.card-inner');
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / rect.width - 0.5;
             const y = (e.clientY - rect.top) / rect.height - 0.5;
-            inner.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
-            tiltCard = card;
+            inner.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+            currentTiltCard = card;
         });
-        grid.addEventListener('mouseleave', () => { if(tiltCard){tiltCard.querySelector('.card-inner').style.transform='';tiltCard=null;} });
+        grid.addEventListener('mouseleave', () => {
+            if (currentTiltCard) {
+                currentTiltCard.querySelector('.card-inner').style.transform = '';
+                currentTiltCard = null;
+            }
+        });
 
-        /* ===== RENDER ===== */
+        // ===== RENDER =====
         function renderGrid(list) {
             grid.innerHTML = '';
-            if(!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">Ничего не найдено</div>'; return; }
-
-            const topIds = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).slice(0,3).map(p=>p.id);
-
             list.forEach((p, i) => {
                 const v = votes[p.id] || 0;
-                const isTop = topIds.includes(p.id) && v > 0;
                 const card = document.createElement('article');
-                card.className = 'card'; card.dataset.id = p.id;
-                card.style.opacity = '0'; card.style.transform = 'translateY(30px)';
+                card.className = 'card';
+                card.dataset.id = p.id;
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
                 card.innerHTML = `
-                    <div class="card-inner" onclick="openModal(${p.id})" style="cursor:pointer">
-                        <div class="card-img-wrap">
-                            <img src="${p.img}" alt="${p.title}" loading="lazy">
-                            <div class="card-overlay"></div>
-                            <div class="vote-count">${v > 0 ? v + ' 🔥' : ''}</div>
-                            <div class="btn-fire ${v?'voted':''}" onclick="event.stopPropagation();handleVote(${p.id}, this, event)">🔥</div>
+                        <div class="card-inner">
+                            <div class="card-img-wrap">
+                                <img src="${p.img}" alt="${p.title}" loading="lazy">
+                                <div class="vote-count">${v > 0 ? v + ' 🔥' : ''}</div>
+                                <div class="btn-fire ${v ? 'voted' : ''}">🔥</div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">${p.title}</h3>
+                                <span class="card-price">${p.price}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-info">
-                        <div><div class="card-cat">${p.category}</div><div class="card-title">${p.title}</div></div>
-                        <span class="card-price">${p.price}</span>
-                    </div>
-                `;
+                    `;
                 grid.appendChild(card);
-                setTimeout(() => { card.style.transition='opacity 0.5s ease,transform 0.5s ease'; card.style.opacity='1'; card.style.transform='translateY(0)'; }, 80 + i*60);
+
+                // Staggered reveal
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + i * 80);
             });
-            updateStats();
         }
 
-        /* ===== VOTE ===== */
-        function handleVote(id, btn, e) {
-            votes[id] = votes[id] ? 0 : (votes[id]||0)+1;
-            try { localStorage.setItem('unio_votes', JSON.stringify(votes)); } catch{}
-            supabaseVote(id, votes[id]);
-            if(votes[id]) sendTelegram(`🔥 Новый голос за <b>${PRODUCTS.find(p=>p.id===id)?.title}</b>! Всего: ${votes[id]}`);
+        // ===== DOUBLE TAP / CLICK =====
+        let lastTap = 0;
+        grid.addEventListener('click', e => {
+            const card = e.target.closest('.card');
+            if (!card) return;
 
-            btn.classList.toggle('voted', votes[id]>0);
-            const countEl = btn.parentElement.querySelector('.vote-count');
-            countEl.textContent = votes[id] ? votes[id] + ' 🔥' : '';
+            const now = Date.now();
+            if (now - lastTap < 350) {
+                // DOUBLE TAP!
+                handleDoubleTap(card, e);
+                lastTap = 0;
+            } else {
+                lastTap = now;
+            }
+        });
 
-            if(votes[id]) {
+        function handleDoubleTap(card, e) {
+            const id = Number(card.dataset.id);
+            const btn = card.querySelector('.btn-fire');
+            const countEl = card.querySelector('.vote-count');
+
+            votes[id] = votes[id] ? 0 : (votes[id] || 0) + 1;
+            try { localStorage.setItem('unio_votes', JSON.stringify(votes)); } catch { }
+
+            if (votes[id]) {
+                // Activate
+                btn.classList.add('voted');
+                countEl.textContent = votes[id] + ' 🔥';
+
+                // Flash effect
+                flash.style.setProperty('--fx', e.clientX + 'px');
+                flash.style.setProperty('--fy', e.clientY + 'px');
+                flash.classList.add('active');
+                setTimeout(() => flash.classList.remove('active'), 200);
+
+                // Spawn particles
                 spawnParticles(e.clientX, e.clientY);
-                flash.style.setProperty('--fx', e.clientX+'px'); flash.style.setProperty('--fy', e.clientY+'px');
-                flash.classList.add('active'); setTimeout(()=>flash.classList.remove('active'), 200);
-                if(navigator.vibrate) navigator.vibrate(30);
+
+                // Haptic feedback (mobile)
+                if (navigator.vibrate) navigator.vibrate(30);
+            } else {
+                btn.classList.remove('voted');
+                countEl.textContent = '';
             }
-            updateStats();
         }
 
-        window.handleVote = handleVote;
-
-        /* ===== PARTICLES ===== */
+        // ===== PARTICLE SYSTEM =====
         function spawnParticles(x, y) {
-            const emojis = ['🔥','✨','','🔥','','💥'];
-            for(let i=0;i<10;i++){
-                const p = document.createElement('div'); p.className='particle';
-                p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-                const angle = (Math.PI*2/10)*i + (Math.random()-0.5)*0.5;
-                const dist = 50 + Math.random()*80;
-                p.style.left=x+'px'; p.style.top=y+'px';
-                p.style.setProperty('--tx', Math.cos(angle)*dist+'px');
-                p.style.setProperty('--ty', Math.sin(angle)*dist-30+'px');
-                p.style.setProperty('--rot', (Math.random()-0.5)*600+'deg');
-                p.style.animationDelay = (Math.random()*0.1)+'s';
-                document.body.appendChild(p); setTimeout(()=>p.remove(), 900);
+            const emojis = ['🔥', '', '', '✨', '', '🔥'];
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const angle = (Math.PI * 2 / 12) * i + (Math.random() - 0.5) * 0.5;
+                const dist = 60 + Math.random() * 100;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 40;
+                const rot = (Math.random() - 0.5) * 720;
+
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                p.style.setProperty('--tx', tx + 'px');
+                p.style.setProperty('--ty', ty + 'px');
+                p.style.setProperty('--rot', rot + 'deg');
+                p.style.animationDelay = (Math.random() * 0.1) + 's';
+                p.style.fontSize = (1.2 + Math.random() * 0.8) + 'rem';
+
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
             }
         }
 
-        /* ===== FILTERS ===== */
-        let activeFilter = 'all';
+        // ===== FILTERS =====
         filters.forEach(f => f.addEventListener('click', () => {
             filters.forEach(c => c.classList.remove('active'));
             f.classList.add('active');
-            activeFilter = f.dataset.filter;
-            applyFilters();
+            const filter = f.dataset.filter;
+            let list = [...PRODUCTS];
+            if (filter !== 'all') list = list.filter(p => p.category === filter);
+            renderGrid(list);
         }));
 
-        function applyFilters() {
-            let list = [...PRODUCTS];
-            if(activeFilter !== 'all') list = list.filter(p => p.category === activeFilter);
-            renderGrid(list);
-        }
-
-        /* ===== MODAL ===== */
-        window.openModal = (id) => {
-            currentModalId = id;
-            const p = PRODUCTS.find(x=>x.id===id);
-            document.getElementById('modal-img').src = p.img;
-            document.getElementById('modal-cat').textContent = p.category;
-            document.getElementById('modal-title').textContent = p.title;
-            document.getElementById('modal-desc').textContent = p.desc;
-            document.getElementById('modal-price').textContent = p.price + ' (по себестоимости)';
-            document.getElementById('modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        };
-        window.closeModal = () => {
-            document.getElementById('modal').classList.remove('active');
-            document.body.style.overflow = '';
-            currentModalId = null;
-        };
-        window.voteFromModal = () => {
-            if(currentModalId) {
-                const card = document.querySelector(`.card[data-id="${currentModalId}"]`);
-                const btn = card?.querySelector('.btn-fire');
-                const rect = btn?.getBoundingClientRect();
-                if(btn && rect) handleVote(currentModalId, btn, {clientX: rect.left+24, clientY: rect.top+24});
-            }
-        };
-        window.shareFromModal = () => {
-            const p = PRODUCTS.find(x=>x.id===currentModalId);
-            if(p) shareProduct(p.title);
+        // ===== SHARE =====
+        window.sharePage = () => {
+            const txt = `UNIO — тест мужской одежды. Голосуйте за модели! Решение — 01.08.2026. ${location.href}`;
+            if (navigator.share) navigator.share({ title: 'UNIO', text: txt, url: location.href }).catch(() => { });
+            else navigator.clipboard.writeText(txt).then(() => alert('Ссылка скопирована'));
         };
 
-        /* ===== STATS ===== */
-        function updateStats() {
-            const tv = Object.values(votes).reduce((a,b)=>a+b,0);
-            const pct = Math.min(100, Math.round((tv/60)*100));
-            document.getElementById('prog-pct').textContent = pct+'%';
-            document.getElementById('prog-fill').style.width = pct+'%';
-
-            document.getElementById('admin-visits').textContent = visits;
-            document.getElementById('admin-votes').textContent = tv;
-            document.getElementById('admin-emails').textContent = '0'; // Email block removed
-            document.getElementById('admin-conv').textContent = '0%'; // Email block removed
-
-            const tbody = document.getElementById('admin-tbody');
-            tbody.innerHTML = [...PRODUCTS].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0)).map(p =>
-                `<tr><td>${p.title}</td><td>${p.category}</td><td>${votes[p.id]||0}</td><td>${p.price}</td></tr>`
-            ).join('');
-        }
-
-        /* ===== ADMIN ===== */
-        window.openAdmin = () => {
-            const pass = prompt('Введите пароль администратора:');
-            if(pass === 'unio2026') {
-                document.getElementById('admin').classList.add('open');
-                updateStats();
-            } else if(pass !== null) toast('Неверный пароль', 'error');
-        };
-        window.closeAdmin = () => document.getElementById('admin').classList.remove('open');
-
-        /* ===== SHARE ===== */
-        window.sharePage = () => shareItem('UNIO | Тест ниши', `UNIO — тест мужской одежды. Голосуйте! Решение — 01.08.2026. ${location.href}`);
-        window.shareProduct = (title) => shareItem(`UNIO: ${title}`, `Я голосую за "${title}" в UNIO. Присоединяйся: ${location.href}`);
-
-        async function shareItem(title, text) {
-            if(navigator.share) { try{await navigator.share({title,text,url:location.href});return}catch{} }
-            try{await navigator.clipboard.writeText(text);toast('Ссылка скопирована','success')}catch{toast('Ошибка','error')}
-        }
-
-        /* ===== TOAST ===== */
-        function toast(msg, type='info') {
-            const c = document.getElementById('toasts');
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.textContent = msg;
-            c.appendChild(t);
-            requestAnimationFrame(()=>t.classList.add('show'));
-            setTimeout(()=>{t.classList.remove('show');t.addEventListener('transitionend',()=>t.remove())},3000);
-        }
-
-        /* ===== COUNTDOWN ===== */
-        const launch = new Date('2026-08-01T00:00:00+03:00').getTime();
-        function updateCD() {
-            const diff = launch - Date.now();
-            if(diff<0) return;
-            document.getElementById('d').textContent = String(Math.floor(diff/864e5)).padStart(2,'0');
-            document.getElementById('h').textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
-            document.getElementById('m').textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
-            document.getElementById('s').textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
-        }
-        setInterval(updateCD, 1000); updateCD();
-
-        /* ===== KEYBOARD ===== */
-        document.addEventListener('keydown', e => { if(e.key==='Escape'){closeModal();closeAdmin();} });
-
-        /* ===== SUPABASE HELPERS ===== */
-        async function supabaseVote(id, count) {
-            if(!SUPABASE_URL.includes('supabase.co')) return;
-            try {
-                await fetch(`${SUPABASE_URL}/rest/v1/votes?id=eq.${id}`, {
-                    method: 'PATCH',
-                    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-                    body: JSON.stringify({ count: count })
-                });
-            } catch(e) {}
-        }
-
-        async function sendTelegram(msg) {
-            if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-            try {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'HTML' })
-                });
-            } catch(e) {}
-        }
-
-        /* ===== INIT ===== */
+        // ===== INIT =====
         renderGrid(PRODUCTS);
-        updateStats();
     </script>
 </body>
 </html>
