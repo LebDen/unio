@@ -32,7 +32,7 @@
         /* Noise texture */
         body::before {
             content: ''; position: fixed; inset: -50%; width: 200%; height: 200%;
-            background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             opacity: 0.06; pointer-events: none; z-index: 0; animation: grain 0.5s steps(1) infinite;
         }
         @keyframes grain { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-5%,-10%)} 30%{transform:translate(3%,-15%)} 50%{transform:translate(12%,9%)} 70%{transform:translate(9%,4%)} 90%{transform:translate(-1%,7%)} }
@@ -79,7 +79,7 @@
         /* CARD */
         .card { position: relative; perspective: 1000px; cursor: pointer; }
         .card-inner { transition: transform 0.15s ease-out; transform-style: preserve-3d; }
-        .card-img-wrap { aspect-ratio: 3/4; background: #0d0d0d; overflow: hidden; position: relative; border: 1px solid var(--border); border-radius: var(--radius-lg); transition: all 0.4s; }
+        .card-img-wrap { aspect-ratio: 3/4; background: #0d0d0d; overflow: hidden; position: relative; border: 1px solid var(--border); border-radius: 16px; transition: all 0.4s; }
         .card:hover .card-img-wrap { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 30px rgba(255,61,0,0.1); }
         .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.85); transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .card:hover .card-img-wrap img { filter: grayscale(0%) brightness(1); transform: scale(1.06); }
@@ -101,47 +101,74 @@
         .card-price { font-size: 0.95rem; color: var(--muted); }
         .card-cat { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 
-        /* ===== MODAL ===== */
+        /* ===== MODAL UPGRADE ===== */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 200;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
             display: grid; place-items: center; padding: 20px;
-            opacity: 0; visibility: hidden; transition: all 0.3s var(--ease);
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        
+
         .modal {
             background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 20px; max-width: 480px; width: 100%;
-            padding: 32px 24px; text-align: center;
-            transform: scale(0.95); transition: transform 0.3s var(--ease);
-            position: relative;
+            border-radius: 24px; max-width: 800px; width: 100%;
+            overflow: hidden; position: relative;
+            transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: var(--border) transparent;
         }
-        .modal-overlay.active .modal { transform: scale(1); }
-        
-        .modal-icon {
-            font-size: 3rem; margin-bottom: 16px; display: block;
-            animation: float 3s ease-in-out infinite;
+        .modal::-webkit-scrollbar { width: 6px; }
+        .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .modal-overlay.active .modal { transform: translateY(0); }
+
+        .modal-content { display: grid; grid-template-columns: 1fr 1fr; }
+        .modal-media { position: relative; aspect-ratio: 3/4; background: #0d0d0d; }
+        .modal-media img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-badge {
+            position: absolute; top: 16px; left: 16px;
+            background: var(--accent); color: #000;
+            padding: 6px 12px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            display: none;
         }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-        
-        .modal-title { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
-        .modal-text { color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
-        .modal-product { 
-            background: var(--bg); padding: 12px 16px; border-radius: 12px; 
-            margin-bottom: 24px; text-align: left; display: flex; gap: 12px; align-items: center;
+
+        .modal-info { padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+        .modal-title { font-family: var(--font-head); font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.1; }
+        .modal-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .modal-price { font-size: 1.25rem; font-weight: 600; }
+        .modal-cat { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; }
+        .modal-desc { color: var(--muted); line-height: 1.5; font-size: 0.9rem; }
+
+        .modal-section { margin-top: 4px; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; display: block; }
+        .size-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+        .size-btn {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text); font-family: var(--font-body); font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
         }
-        .modal-product-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .modal-product-info { flex: 1; }
-        .modal-product-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
-        .modal-product-price { color: var(--accent); font-weight: 600; }
-        
+        .size-btn:hover { border-color: var(--text); }
+        .size-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+        .btn-primary {
+            width: 100%; padding: 16px; border-radius: 12px; border: none;
+            background: var(--accent); color: #000; font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.03em;
+            margin-top: 8px;
+        }
+        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary.disabled { background: var(--border); color: var(--muted); cursor: default; transform: none; }
+
+        .modal-hint { font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 4px; }
         .modal-close {
-            position: absolute; top: 16px; right: 16px;
+            position: absolute; top: 16px; right: 16px; z-index: 10;
             width: 36px; height: 36px; border-radius: 50%;
-            background: var(--bg); border: 1px solid var(--border);
-            display: grid; place-items: center; cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+            display: grid; place-items: center; cursor: pointer; color: var(--text);
+            transition: all 0.2s; backdrop-filter: blur(4px);
         }
         .modal-close:hover { background: var(--text); color: var(--bg); }
 
@@ -161,12 +188,12 @@
             .sec-title { font-size: 1.8rem; }
             .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
             .card-img-wrap { border-radius: 12px; }
-            .modal { padding: 24px 20px; }
-            .modal-title { font-size: 1.3rem; }
+            .modal-content { grid-template-columns: 1fr; }
+            .modal-media { aspect-ratio: 4/3; }
+            .modal-info { padding: 24px 20px; }
         }
         @media(max-width: 480px) {
             .grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
-            .modal-product { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -214,22 +241,38 @@
 
     <!-- Modal -->
     <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-        <div class="modal">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <span class="modal-icon">⏳</span>
-            <h3 class="modal-title">Товар скоро будет доступен</h3>
-            <p class="modal-text">Мы готовим первую коллекцию. Оставьте контакты, чтобы получить уведомление о запуске и эксклюзивную скидку.</p>
+      <div class="modal">
+        <button class="modal-close" onclick="closeModal()" aria-label="Закрыть">✕</button>
+        
+        <div class="modal-content">
+          <div class="modal-media">
+            <img id="modal-img" src="" alt="" loading="lazy">
+            <span class="modal-badge" id="modal-badge"></span>
+          </div>
+          
+          <div class="modal-info">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <div class="modal-meta">
+              <span class="modal-price" id="modal-price"></span>
+              <span class="modal-cat" id="modal-cat"></span>
+            </div>
+            <p class="modal-desc" id="modal-desc"></p>
             
-            <div class="modal-product">
-                <img class="modal-product-img" id="modal-img" src="" alt="">
-                <div class="modal-product-info">
-                    <div class="modal-product-title" id="modal-title"></div>
-                    <div class="modal-product-price" id="modal-price"></div>
-                </div>
+            <div class="modal-section">
+              <label class="section-label">Размер</label>
+              <div class="size-grid" id="size-grid">
+                <button class="size-btn" data-size="S">S</button>
+                <button class="size-btn" data-size="M">M</button>
+                <button class="size-btn active" data-size="L">L</button>
+                <button class="size-btn" data-size="XL">XL</button>
+              </div>
             </div>
             
-            <button class="btn-share" style="width:100%" onclick="notifyMe()">Уведомить о запуске</button>
+            <button class="btn-primary" id="modal-cta" onclick="handleCTA()">🔔 Уведомить о запуске</button>
+            <p class="modal-hint">Товар появится в продаже в ближайшее время</p>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Toast -->
@@ -254,6 +297,8 @@
         const filters = document.querySelectorAll('.filters .chip');
         const modal = document.getElementById('modal');
         const toast = document.getElementById('toast');
+        let selectedSize = 'L';
+        let isCTAClicked = false;
 
         /* ===== ОТРИСОВКА ===== */
         function renderGrid(list) {
@@ -299,9 +344,25 @@
             document.getElementById('modal-img').src = p.img;
             document.getElementById('modal-title').textContent = p.title;
             document.getElementById('modal-price').textContent = p.price;
+            document.getElementById('modal-cat').textContent = p.category;
+            
+            const descMap = {
+                'верх': 'Плотный хлопок, усиленные швы, свободный крой. Не садится после стирки.',
+                'низ': 'Эластичная ткань, удобная посадка, износостойкая фурнитура.',
+                'аксессуары': 'Натуральные материалы, минималистичный дизайн, подходит к любому образу.'
+            };
+            document.getElementById('modal-desc').textContent = descMap[p.category] || descMap['верх'];
+            
+            // Сброс состояния
+            isCTAClicked = false;
+            selectedSize = 'L';
+            const cta = document.getElementById('modal-cta');
+            cta.textContent = '🔔 Уведомить о запуске';
+            cta.classList.remove('disabled');
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b.dataset.size === 'L'));
             
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Блокируем прокрутку
+            document.body.style.overflow = 'hidden';
         };
 
         window.closeModal = () => {
@@ -309,17 +370,35 @@
             document.body.style.overflow = '';
         };
 
-        // Закрытие по Escape
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeModal();
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // Выбор размера
+        document.getElementById('size-grid')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('size-btn')) {
+                selectedSize = e.target.dataset.size;
+                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            }
         });
 
-        /* ===== УВЕДОМЛЕНИЕ ===== */
-        window.notifyMe = () => {
+        // Обработка главной кнопки
+        window.handleCTA = () => {
+            if (isCTAClicked) return;
+            isCTAClicked = true;
+            const cta = document.getElementById('modal-cta');
+            cta.textContent = `✓ Записано: размер ${selectedSize}`;
+            cta.classList.add('disabled');
             showToast();
-            // Здесь можно добавить сбор email или подписку на Telegram
-            // Например: window.open('https://t.me/your_bot', '_blank');
         };
+
+        // Свайп вниз для закрытия на мобильных
+        let touchStartY = 0;
+        const modalEl = document.querySelector('.modal');
+        modalEl?.addEventListener('touchstart', (e) => touchStartY = e.touches[0].clientY, { passive: true });
+        modalEl?.addEventListener('touchmove', (e) => {
+            const diff = e.touches[0].clientY - touchStartY;
+            if (diff > 80) closeModal();
+        }, { passive: true });
 
         function showToast() {
             toast.classList.add('show');
@@ -374,7 +453,6 @@
         /* ===== ЗАПУСК ===== */
         (function init() {
             renderGrid(PRODUCTS);
-            
             setTimeout(() => {
                 intro.classList.add('up');
                 setTimeout(() => {
