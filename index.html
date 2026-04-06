@@ -101,7 +101,7 @@
         .card-price { font-size: 0.95rem; color: var(--muted); }
         .card-cat { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 
-        /* ===== MODAL UPGRADE ===== */
+        /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 200;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
@@ -123,8 +123,58 @@
         .modal-overlay.active .modal { transform: translateY(0); }
 
         .modal-content { display: grid; grid-template-columns: 1fr 1fr; }
+        
+        /* 🆕 Галерея */
         .modal-media { position: relative; aspect-ratio: 3/4; background: #0d0d0d; }
-        .modal-media img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-media img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.25s ease; }
+        .modal-media img.fade { opacity: 0; }
+
+        .gallery-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--border);
+            color: var(--text); font-size: 1.2rem; cursor: pointer;
+            display: grid; place-items: center; transition: all 0.2s;
+            z-index: 5; backdrop-filter: blur(4px);
+            user-select: none;
+        }
+        .gallery-nav:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .gallery-nav.prev { left: 12px; }
+        .gallery-nav.next { right: 12px; }
+
+        .gallery-counter {
+            position: absolute; bottom: 12px; right: 12px;
+            background: rgba(0,0,0,0.7); color: var(--muted);
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.7rem; font-family: var(--font-body);
+            z-index: 5; pointer-events: none;
+        }
+
+        .gallery-thumbs {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            display: flex; gap: 8px; padding: 12px;
+            background: linear-gradient(180deg, transparent, rgba(0,0,0,0.85));
+            overflow-x: auto; scrollbar-width: none;
+            z-index: 5;
+        }
+        .gallery-thumbs::-webkit-scrollbar { display: none; }
+
+        .gallery-thumbs img {
+            width: 60px; height: 60px; object-fit: cover;
+            border-radius: 8px; border: 2px solid transparent;
+            cursor: pointer; transition: all 0.2s;
+            opacity: 0.55; flex-shrink: 0;
+        }
+        .gallery-thumbs img:hover { opacity: 1; transform: scale(1.05); }
+        .gallery-thumbs img.active {
+            border-color: var(--accent); opacity: 1;
+            box-shadow: 0 0 0 2px rgba(255,61,0,0.35);
+        }
+
+        .modal-media.single .gallery-nav,
+        .modal-media.single .gallery-counter,
+        .modal-media.single .gallery-thumbs { display: none; }
+
         .modal-badge {
             position: absolute; top: 16px; left: 16px;
             background: var(--accent); color: #000;
@@ -191,6 +241,8 @@
             .modal-content { grid-template-columns: 1fr; }
             .modal-media { aspect-ratio: 4/3; }
             .modal-info { padding: 24px 20px; }
+            .gallery-nav { width: 36px; height: 36px; font-size: 1rem; }
+            .gallery-thumbs img { width: 50px; height: 50px; }
         }
         @media(max-width: 480px) {
             .grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
@@ -245,8 +297,13 @@
         <button class="modal-close" onclick="closeModal()" aria-label="Закрыть">✕</button>
         
         <div class="modal-content">
-          <div class="modal-media">
+          <!-- 🆕 Галерея -->
+          <div class="modal-media" id="modal-media">
             <img id="modal-img" src="" alt="" loading="lazy">
+            <button class="gallery-nav prev" onclick="changeImage(-1)" aria-label="Предыдущее">❮</button>
+            <button class="gallery-nav next" onclick="changeImage(1)" aria-label="Следующее">❯</button>
+            <span class="gallery-counter" id="gallery-counter"></span>
+            <div class="gallery-thumbs" id="gallery-thumbs"></div>
             <span class="modal-badge" id="modal-badge"></span>
           </div>
           
@@ -281,14 +338,72 @@
     <script>
         /* ===== ПРОДУКТЫ ===== */
         const PRODUCTS = [
-            { id: 1, title: 'BOSS футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png' },
-            { id: 2, title: 'WAR футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png' },
-            { id: 3, title: 'ХРАБРОСТЬ футболка', category: 'верх', price: '1 000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png' },
-            { id: 4, title: 'Носки', category: 'аксессуары', price: '490 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png' },
-            { id: 5, title: 'Спортивный костюм', category: 'верх', price: '3200 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%206.png' },
-            { id: 6, title: 'Джинсы узкие', category: 'низ', price: '3 990 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' },
-            { id: 7, title: 'Спортивная форма', category: 'верх', price: '2000 ₽', img: 'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%205.png' },
-            { id: 8, title: 'Сумка через плечо', category: 'аксессуары', price: '2 490 ₽', img: 'https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png' }
+            { 
+                id: 1, 
+                title: 'BOSS футболка', 
+                category: 'верх', 
+                price: '1 000 ₽', 
+                images: [
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201.png',
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201-2.png',
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%201-3.png'
+                ]
+            },
+            { 
+                id: 2, 
+                title: 'WAR футболка', 
+                category: 'верх', 
+                price: '1 000 ₽', 
+                images: [
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202.png',
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%202-2.png'
+                ]
+            },
+            { 
+                id: 3, 
+                title: 'ХРАБРОСТЬ футболка', 
+                category: 'верх', 
+                price: '1 000 ₽', 
+                images: ['https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%203.png'] 
+            },
+            { 
+                id: 4, 
+                title: 'Носки', 
+                category: 'аксессуары', 
+                price: '490 ₽', 
+                images: ['https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%204.png'] 
+            },
+            { 
+                id: 5, 
+                title: 'Спортивный костюм', 
+                category: 'верх', 
+                price: '3200 ₽', 
+                images: ['https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%206.png'] 
+            },
+            { 
+                id: 6, 
+                title: 'Джинсы узкие', 
+                category: 'низ', 
+                price: '3 990 ₽', 
+                images: ['https://static.tildacdn.com/stor6439-3762-4562-a664-313564373462/37715655.png'] 
+            },
+            { 
+                id: 7, 
+                title: 'Спортивная форма', 
+                category: 'верх', 
+                price: '2000 ₽', 
+                images: ['https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%205.png'] 
+            },
+            { 
+                id: 8, 
+                title: 'Сумка через плечо', 
+                category: 'аксессуары', 
+                price: '2 490 ₽', 
+                images: [
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/Товар%207.png',
+                    'https://raw.githubusercontent.com/LebDen/unio/refs/heads/main/товар%207.1.png'
+                ] 
+            }
         ];
 
         const intro = document.getElementById('intro');
@@ -297,8 +412,13 @@
         const filters = document.querySelectorAll('.filters .chip');
         const modal = document.getElementById('modal');
         const toast = document.getElementById('toast');
+        
         let selectedSize = 'L';
         let isCTAClicked = false;
+        
+        // 🆕 Галерея: состояние
+        let currentImageIndex = 0;
+        let currentProductImages = [];
 
         /* ===== ОТРИСОВКА ===== */
         function renderGrid(list) {
@@ -310,10 +430,13 @@
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(30px)';
                 
+                // 🆕 Используем первое изображение из массива
+                const mainImg = p.images ? p.images[0] : p.img;
+                
                 card.innerHTML = `
                     <div class="card-inner" onclick="openModal(${p.id})">
                         <div class="card-img-wrap">
-                            <img src="${p.img}" alt="${p.title}" loading="lazy">
+                            <img src="${mainImg}" alt="${p.title}" loading="lazy">
                             <div class="card-overlay"><span class="card-hint">Смотреть</span></div>
                         </div>
                         <div class="card-info">
@@ -327,7 +450,6 @@
                 `;
                 grid.appendChild(card);
 
-                // Анимация появления
                 setTimeout(() => {
                     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     card.style.opacity = '1';
@@ -336,12 +458,17 @@
             });
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
+        /* ===== МОДАЛЬНОЕ ОКНО + ГАЛЕРЕЯ ===== */
         window.openModal = (id) => {
             const p = PRODUCTS.find(x => x.id === id);
             if (!p) return;
             
-            document.getElementById('modal-img').src = p.img;
+            // 🆕 Инициализация галереи
+            currentProductImages = p.images || [p.img];
+            currentImageIndex = 0;
+            
+            updateModalImage();
+            
             document.getElementById('modal-title').textContent = p.title;
             document.getElementById('modal-price').textContent = p.price;
             document.getElementById('modal-cat').textContent = p.category;
@@ -352,6 +479,17 @@
                 'аксессуары': 'Натуральные материалы, минималистичный дизайн, подходит к любому образу.'
             };
             document.getElementById('modal-desc').textContent = descMap[p.category] || descMap['верх'];
+            
+            // 🆕 Рендер миниатюр
+            renderThumbnails();
+            
+            // 🆕 Управление видимостью элементов галереи
+            const mediaEl = document.getElementById('modal-media');
+            if (currentProductImages.length <= 1) {
+                mediaEl.classList.add('single');
+            } else {
+                mediaEl.classList.remove('single');
+            }
             
             // Сброс состояния
             isCTAClicked = false;
@@ -370,7 +508,89 @@
             document.body.style.overflow = '';
         };
 
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+        // 🆕 Обновление изображения в модалке
+        function updateModalImage() {
+            const imgEl = document.getElementById('modal-img');
+            const counterEl = document.getElementById('gallery-counter');
+            
+            // Плавный фейд
+            imgEl.classList.add('fade');
+            setTimeout(() => {
+                imgEl.src = currentProductImages[currentImageIndex];
+                imgEl.onload = () => { imgEl.classList.remove('fade'); };
+                // Если изображение уже в кэше
+                if (imgEl.complete) imgEl.classList.remove('fade');
+            }, 120);
+            
+            // Счётчик
+            if (currentProductImages.length > 1) {
+                counterEl.textContent = `${currentImageIndex + 1} / ${currentProductImages.length}`;
+            }
+            
+            updateActiveThumb();
+        }
+
+        // 🆕 Переключение изображений
+        window.changeImage = (direction) => {
+            if (currentProductImages.length <= 1) return;
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
+            if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
+            updateModalImage();
+        };
+
+        // 🆕 Рендер миниатюр
+        function renderThumbnails() {
+            const container = document.getElementById('gallery-thumbs');
+            container.innerHTML = '';
+            
+            currentProductImages.forEach((src, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.alt = `Фото ${index + 1}`;
+                thumb.dataset.index = index;
+                thumb.className = currentImageIndex === index ? 'active' : '';
+                thumb.onclick = () => {
+                    currentImageIndex = index;
+                    updateModalImage();
+                };
+                container.appendChild(thumb);
+            });
+        }
+
+        // 🆕 Обновление активной миниатюры
+        function updateActiveThumb() {
+            document.querySelectorAll('.gallery-thumbs img').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === currentImageIndex);
+            });
+        }
+
+        // 🆕 Навигация клавиатурой
+        document.addEventListener('keydown', e => {
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'Escape') closeModal();
+            if (currentProductImages.length > 1) {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+            }
+        });
+
+        // 🆕 Свайпы для мобильных
+        let touchStartX = 0;
+        const modalMedia = document.getElementById('modal-media');
+        
+        modalMedia?.addEventListener('touchstart', (e) => {
+            if (currentProductImages.length <= 1) return;
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        modalMedia?.addEventListener('touchend', (e) => {
+            if (currentProductImages.length <= 1) return;
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) {
+                changeImage(diff > 0 ? 1 : -1);
+            }
+        }, { passive: true });
 
         // Выбор размера
         document.getElementById('size-grid')?.addEventListener('click', (e) => {
